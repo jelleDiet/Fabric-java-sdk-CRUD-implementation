@@ -40,7 +40,7 @@ public class FishDAOImpl implements FishDAO {
             Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        chaincodeExecuter.saveObject(json);
+        chaincodeExecuter.saveObject(String.valueOf(fish.getId()),json);
     }
     
 }

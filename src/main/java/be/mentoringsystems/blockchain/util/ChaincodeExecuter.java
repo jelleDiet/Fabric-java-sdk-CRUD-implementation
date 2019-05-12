@@ -105,7 +105,7 @@ public class ChaincodeExecuter {
         return payload;
     }
     
-    public String saveObject(String json) {
+    public String saveObject(String key, String json) {
         
          ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
                 .setName(chaincodeName)
@@ -114,6 +114,17 @@ public class ChaincodeExecuter {
         
         
         return "";
+    }
+    
+     public String getObjectByKey(String key) {
+         String result = "";
+        try {
+            result = executeTransaction(null, null, false, "get", key);
+        } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
+        return result;
     }
 
 }
