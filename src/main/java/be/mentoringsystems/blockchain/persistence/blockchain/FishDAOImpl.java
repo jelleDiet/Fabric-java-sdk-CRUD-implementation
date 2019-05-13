@@ -76,7 +76,7 @@ public class FishDAOImpl implements FishDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(UUID id) {
         chaincodeExecuter.deleteObject(String.valueOf(id));
     }
 

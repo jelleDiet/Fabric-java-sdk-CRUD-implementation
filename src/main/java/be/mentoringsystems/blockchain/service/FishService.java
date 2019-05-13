@@ -22,7 +22,7 @@ public interface FishService {
 
     List<Fish> query(RichQuery query);
 
-    void delete(int id);
+    void delete(UUID id);
 
     List<Fish> getAll();
 }

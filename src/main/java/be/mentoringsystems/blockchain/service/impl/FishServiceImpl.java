@@ -40,7 +40,7 @@ public class FishServiceImpl implements FishService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(UUID id) {
         fishDAO.delete(id);
     }
 
