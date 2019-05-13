@@ -23,4 +23,6 @@ public interface FishService {
     List<Fish> query(RichQuery query);
 
     void delete(int id);
+
+    List<Fish> getAll();
 }

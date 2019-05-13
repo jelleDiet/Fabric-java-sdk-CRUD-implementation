@@ -25,4 +25,6 @@ public interface FishDAO {
 
     void delete(int id);
 
+    List<Fish> getAll();
+
 }

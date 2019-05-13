@@ -31,8 +31,14 @@ public class FishController {
 
     //Gets a fish using id as key
     @RequestMapping("/get")
-    Fish getFish() {
-        return fishService.getById(UUID.randomUUID());
+    Fish getFish(@RequestParam UUID id) {
+        return fishService.getById(id);
+    }
+
+    //Gets a fish using id as key
+    @RequestMapping("/getAll")
+    List<Fish> getAllFish() {
+        return fishService.getAll();
     }
 
     //Saves a fish using id as key

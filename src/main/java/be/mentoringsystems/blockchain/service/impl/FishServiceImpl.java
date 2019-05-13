@@ -44,4 +44,9 @@ public class FishServiceImpl implements FishService {
         fishDAO.delete(id);
     }
 
+    @Override
+    public List<Fish> getAll() {
+        return fishDAO.getAll();
+    }
+
 }

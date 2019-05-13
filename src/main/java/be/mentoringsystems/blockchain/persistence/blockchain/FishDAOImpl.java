@@ -14,7 +14,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +78,28 @@ public class FishDAOImpl implements FishDAO {
     @Override
     public void delete(int id) {
         chaincodeExecuter.deleteObject(String.valueOf(id));
+    }
+
+    @Override
+    public List<Fish> getAll() {
+        List<Fish> fish = new ArrayList<>();
+        TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
+        };
+
+        RichQuery query = new RichQuery();
+        Map<String, Object> selector = new HashMap<>();
+        selector.put("docType", "fish");
+        query.setSelector(selector);
+
+        String json = chaincodeExecuter.query(query);
+
+        try {
+            fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
+        } catch (IOException ex) {
+            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return fish;
     }
 
 }
