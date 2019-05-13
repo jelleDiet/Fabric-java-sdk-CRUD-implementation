@@ -23,7 +23,7 @@ public class FishController {
     @Autowired
     FishService fishService;
 
-    @GetMapping
+    @RequestMapping("/get")
     Fish getFish() {
         return fishService.getById(5);
     }
