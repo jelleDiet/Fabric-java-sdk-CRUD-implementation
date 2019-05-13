@@ -1,34 +1,31 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Spring Boot Thymeleaf Hello World Example</title>
-
-</head>
-
-<body>
-
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">Mkyong.com</a>
-</nav>
-
-<main role="main" class="container">
-
-    <div class="starter-template">
-        <h1>Spring Boot Web Thymeleaf Example</h1>
-        <h2>
-            <span th:text="'Hello, ' + ${message}"></span>
-        </h2>
+    <div th:switch="${fishes}">
+        <h2 th:case="null">No fish yet!</h2>
+        <div th:case="*">
+            <h2>Fish</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Weight</th>
+                        <th>Price</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="fish : ${fishes}">
+                        <td th:text="${fish.type}"></td>
+                        <td th:text="${fish.weight}"></td>
+                        <td th:text="${fish.price}"></td>
+                        <td><a th:href="@{/fish/delete?id={id}(id=${fish.id})}">Delete</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>      
+        <p><a href="/blockchain/createFish">Add a new fish</a></p>
+        
+         <p><a href="/blockchain/queryFish">Query for fish</a></p>
     </div>
 
-    <ol>
-        <li th:each="task : ${tasks}" th:text="${task}"></li>
-    </ol>
-
-</main>
-<!-- /.container -->
-
-</body>
 </html>

@@ -43,13 +43,15 @@ public class FishController {
 
     //Saves a fish using id as key
     @RequestMapping("/save")
-    Fish saveFish() {
+    Fish saveFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price) {
 
         Fish fish = new Fish();
         fish.setId(UUID.randomUUID());
-        fish.setType("tuna");
-        fish.setPrice(BigDecimal.ONE);
-        fish.setWeight(1.2);
+        fish.setType(type);
+        fish.setPrice(price);
+        if (weight != null) {
+            fish.setWeight(weight);
+        }
         fishService.save(fish);
         return fish;
     }
@@ -62,12 +64,19 @@ public class FishController {
 
     //Returns all fish of type tuna
     @RequestMapping("/query")
-    List<Fish> queryFish() {
+    List<Fish> queryFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price) {
         RichQuery query = new RichQuery();
         Map<String, Object> selector = new HashMap<>();
-        selector.put("type", "tuna");
+        if (type != null && !type.isEmpty()) {
+            selector.put("type", type);
+        }
+        if (weight != null) {
+            selector.put("weight", weight);
+        }
+        if (price != null) {
+            selector.put("price", price);
+        }
         selector.put("docType", "fish");
-        String functionNameRichQuery = "query";
         query.setSelector(selector);
 
         return fishService.query(query);
