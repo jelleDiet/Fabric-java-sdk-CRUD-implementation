@@ -6,8 +6,10 @@
 package be.mentoringsystems.blockchain.service.impl;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
 import be.mentoringsystems.blockchain.service.FishService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FishServiceImpl implements FishService {
-    
-    @Autowired 
+
+    @Autowired
     FishDAO fishDAO;
 
     @Override
@@ -30,5 +32,10 @@ public class FishServiceImpl implements FishService {
     public void save(Fish fish) {
         fishDAO.save(fish);
     }
-    
+
+    @Override
+    public List<Fish> query(RichQuery query) {
+        return fishDAO.query(query);
+    }
+
 }

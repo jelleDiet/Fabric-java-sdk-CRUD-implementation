@@ -9,6 +9,9 @@ package be.mentoringsystems.blockchain.util;
  *
  * @author jellediet
  */
+import be.mentoringsystems.blockchain.config.Config;
+import be.mentoringsystems.blockchain.model.query.RichQuery;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -36,7 +39,7 @@ public class ChaincodeExecuter {
     private String version;
     private ChaincodeID ccId;
     private long waitTime = 6000; //Milliseconds
-    @Autowired 
+    @Autowired
     Channel channel;
     @Autowired
     HFClient hfClient;
@@ -66,12 +69,12 @@ public class ChaincodeExecuter {
     }
 
     public String executeTransaction(boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
-       
+
         ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
-                .setName(chaincodeName)
-                .setVersion(version);
+                .setName(Config.CHAINCODE_1_NAME)
+                .setVersion(Config.CHAINCODE_1_VERSION);
         ccId = chaincodeIDBuilder.build();
-        
+
         TransactionProposalRequest transactionProposalRequest = hfClient.newTransactionProposalRequest();
         transactionProposalRequest.setChaincodeID(ccId);
         transactionProposalRequest.setChaincodeLanguage(TransactionRequest.Type.JAVA);
@@ -102,7 +105,7 @@ public class ChaincodeExecuter {
         }
 
         if (invoke) {
-             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO,"Sending transaction to orderers...");
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Sending transaction to orderers...");
             // Java sdk tries all orderers to send transaction, so don't worry about one orderer gone.
             channel.sendTransaction(successful).thenApply(transactionEvent -> {
                 Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: txid: " + transactionEvent.getTransactionID());
@@ -115,27 +118,40 @@ public class ChaincodeExecuter {
         }
         return payload;
     }
-    
+
     public String saveObject(String key, String json) {
-        
-         ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
-                .setName(chaincodeName)
-                .setVersion(version);
-        ccId = chaincodeIDBuilder.build();
-        
-        
-        return "";
+
+        String result = "";
+        String[] args = {key, json};
+        try {
+            result = executeTransaction(true, "set", args);
+        } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
     }
-    
-     public String getObjectByKey(String key) {
-         String result = "";
+
+    public String getObjectByKey(String key) {
+        String result = "";
         try {
             result = executeTransaction(false, "get", key);
         } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
+
         return result;
+    }
+
+    public String query(RichQuery query) {
+        String result = "";
+        try {
+            String[] args = {Mapper.INSTANCE.getObjectMapper().writeValueAsString(query)};
+            result = executeTransaction(false, "query", args);
+        } catch (JsonProcessingException | InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "[" + result + "]";
     }
 
 }

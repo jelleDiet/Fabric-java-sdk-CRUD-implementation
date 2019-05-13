@@ -6,7 +6,6 @@
 package be.mentoringsystems.blockchain.config;
 
 import be.mentoringsystems.blockchain.user.UserContext;
-import be.mentoringsystems.blockchain.util.UserContextUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -72,14 +71,13 @@ public class BlockchainConfig {
         adminUserContext.setMspId(Config.ORG1_MSP); // org1 mspid
         Enrollment adminEnrollment = hfcaClient.enroll(Config.ADMIN_NAME, Config.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
         adminUserContext.setEnrollment(adminEnrollment);
-        UserContextUtil.writeUserContext(adminUserContext); // save admin context to local file system
 
         return adminUserContext;
     }
 
     @Bean
     public HFClient createHFClient() throws Exception {
-        UserContext adminUserContext = UserContextUtil.readUserContext("org1", "admin");
+        UserContext adminUserContext = enrollAdmin();
         HFClient hfClient = HFClient.createNewInstance();
         CryptoSuite cryptoSuite = CryptoSuite.Factory.getCryptoSuite();
         hfClient.setCryptoSuite(cryptoSuite);

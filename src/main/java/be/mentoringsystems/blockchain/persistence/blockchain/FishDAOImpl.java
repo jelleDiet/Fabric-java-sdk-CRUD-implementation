@@ -6,10 +6,15 @@
 package be.mentoringsystems.blockchain.persistence.blockchain;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
 import be.mentoringsystems.blockchain.util.ChaincodeExecuter;
 import be.mentoringsystems.blockchain.util.Mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class FishDAOImpl implements FishDAO {
-    
+
     @Autowired
     ChaincodeExecuter chaincodeExecuter;
 
@@ -29,7 +34,12 @@ public class FishDAOImpl implements FishDAO {
     public Fish getById(int id) {
         String key = String.valueOf(id);
         String json = chaincodeExecuter.getObjectByKey(key);
-        Fish fish = Mapper.INSTANCE.getObjectMapper().convertValue(json, Fish.class);
+        Fish fish = null;
+        try {
+            fish = Mapper.INSTANCE.getObjectMapper().readValue(json, Fish.class);
+        } catch (IOException ex) {
+            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return fish;
     }
 
@@ -37,12 +47,29 @@ public class FishDAOImpl implements FishDAO {
     public void save(Fish fish) {
         String json = "";
         try {
-             json = Mapper.INSTANCE.getObjectMapper().writeValueAsString(fish);
+            json = Mapper.INSTANCE.getObjectMapper().writeValueAsString(fish);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        chaincodeExecuter.saveObject(String.valueOf(fish.getId()),json);
+
+        chaincodeExecuter.saveObject(String.valueOf(fish.getId()), json);
     }
-    
+
+    @Override
+    public List<Fish> query(RichQuery query) {
+        List<Fish> fish = new ArrayList<>();
+        TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
+        };
+
+        String json = chaincodeExecuter.query(query);
+
+        try {
+            fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
+        } catch (IOException ex) {
+            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return fish;
+    }
+
 }
