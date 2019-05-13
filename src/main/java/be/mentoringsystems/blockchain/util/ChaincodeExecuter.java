@@ -26,6 +26,7 @@ import org.hyperledger.fabric.sdk.TransactionProposalRequest;
 import org.hyperledger.fabric.sdk.TransactionRequest;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,6 +36,10 @@ public class ChaincodeExecuter {
     private String version;
     private ChaincodeID ccId;
     private long waitTime = 6000; //Milliseconds
+    @Autowired 
+    Channel channel;
+    @Autowired
+    HFClient hfClient;
 
     public String getChaincodeName() {
         return chaincodeName;
@@ -60,8 +65,14 @@ public class ChaincodeExecuter {
         this.waitTime = waitTime;
     }
 
-    public String executeTransaction(HFClient client, Channel channel, boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
-        TransactionProposalRequest transactionProposalRequest = client.newTransactionProposalRequest();
+    public String executeTransaction(boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
+       
+        ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
+                .setName(chaincodeName)
+                .setVersion(version);
+        ccId = chaincodeIDBuilder.build();
+        
+        TransactionProposalRequest transactionProposalRequest = hfClient.newTransactionProposalRequest();
         transactionProposalRequest.setChaincodeID(ccId);
         transactionProposalRequest.setChaincodeLanguage(TransactionRequest.Type.JAVA);
 
@@ -119,7 +130,7 @@ public class ChaincodeExecuter {
      public String getObjectByKey(String key) {
          String result = "";
         try {
-            result = executeTransaction(null, null, false, "get", key);
+            result = executeTransaction(false, "get", key);
         } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }

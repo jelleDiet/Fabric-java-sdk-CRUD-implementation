@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package be.mentoringsystems.blockchain.persistence.hibernate;
+package be.mentoringsystems.blockchain.persistence.blockchain;
 
 import be.mentoringsystems.blockchain.model.Fish;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -28,7 +27,10 @@ public class FishDAOImpl implements FishDAO {
 
     @Override
     public Fish getById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String key = String.valueOf(id);
+        String json = chaincodeExecuter.getObjectByKey(key);
+        Fish fish = Mapper.INSTANCE.getObjectMapper().convertValue(json, Fish.class);
+        return fish;
     }
 
     @Override

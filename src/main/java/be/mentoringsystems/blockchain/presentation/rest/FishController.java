@@ -6,6 +6,8 @@
 package be.mentoringsystems.blockchain.presentation.rest;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.service.FishService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/fish")
 public class FishController {
 
+    @Autowired
+    FishService fishService;
+
     @GetMapping
     Fish getFish() {
-        Fish fish = new Fish();
-        fish.setId(1);
-        fish.setType("salmon");
-        return fish;
+        return fishService.getById(5);
     }
 
     @RequestMapping("/save")
