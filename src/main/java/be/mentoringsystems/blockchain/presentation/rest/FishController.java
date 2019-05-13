@@ -12,8 +12,10 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -30,7 +32,7 @@ public class FishController {
     //Gets a fish using id as key
     @RequestMapping("/get")
     Fish getFish() {
-        return fishService.getById(5);
+        return fishService.getById(UUID.randomUUID());
     }
 
     //Saves a fish using id as key
@@ -38,7 +40,7 @@ public class FishController {
     Fish saveFish() {
 
         Fish fish = new Fish();
-        fish.setId(1);
+        fish.setId(UUID.randomUUID());
         fish.setType("tuna");
         fish.setPrice(BigDecimal.ONE);
         fish.setWeight(1.2);
@@ -48,8 +50,8 @@ public class FishController {
 
     //Deletes an object by its key
     @RequestMapping("/delete")
-    int deleteFish() {
-        return 1;
+    void deleteFish(@RequestParam int id) {
+        fishService.delete(id);
     }
 
     //Returns all fish of type tuna

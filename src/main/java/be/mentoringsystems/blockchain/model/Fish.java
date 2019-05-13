@@ -8,6 +8,7 @@ package be.mentoringsystems.blockchain.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  *
@@ -17,7 +18,7 @@ public class Fish implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    private UUID id;
     private String type;
     private double weight;
     private BigDecimal price;
@@ -27,11 +28,11 @@ public class Fish implements Serializable {
         return docType;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

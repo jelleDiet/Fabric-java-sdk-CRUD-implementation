@@ -10,6 +10,7 @@ import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
 import be.mentoringsystems.blockchain.service.FishService;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class FishServiceImpl implements FishService {
     FishDAO fishDAO;
 
     @Override
-    public Fish getById(int id) {
+    public Fish getById(UUID id) {
         return fishDAO.getById(id);
     }
 
@@ -36,6 +37,11 @@ public class FishServiceImpl implements FishService {
     @Override
     public List<Fish> query(RichQuery query) {
         return fishDAO.query(query);
+    }
+
+    @Override
+    public void delete(int id) {
+        fishDAO.delete(id);
     }
 
 }

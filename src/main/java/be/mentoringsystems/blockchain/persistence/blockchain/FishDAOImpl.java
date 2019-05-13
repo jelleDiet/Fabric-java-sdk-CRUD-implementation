@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class FishDAOImpl implements FishDAO {
     ChaincodeExecuter chaincodeExecuter;
 
     @Override
-    public Fish getById(int id) {
+    public Fish getById(UUID id) {
         String key = String.valueOf(id);
         String json = chaincodeExecuter.getObjectByKey(key);
         Fish fish = null;
@@ -70,6 +71,11 @@ public class FishDAOImpl implements FishDAO {
         }
 
         return fish;
+    }
+
+    @Override
+    public void delete(int id) {
+        chaincodeExecuter.deleteObject(String.valueOf(id));
     }
 
 }

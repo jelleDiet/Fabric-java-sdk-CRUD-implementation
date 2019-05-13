@@ -143,6 +143,17 @@ public class ChaincodeExecuter {
         return result;
     }
 
+    public String deleteObject(String key) {
+        String result = "";
+        try {
+            result = executeTransaction(true, "delete", key);
+        } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+
     public String query(RichQuery query) {
         String result = "";
         try {

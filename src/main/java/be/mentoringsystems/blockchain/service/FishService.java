@@ -8,6 +8,7 @@ package be.mentoringsystems.blockchain.service;
 import be.mentoringsystems.blockchain.model.Fish;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -15,9 +16,11 @@ import java.util.List;
  */
 public interface FishService {
 
-    Fish getById(int id);
+    Fish getById(UUID id);
 
     void save(Fish fish);
 
     List<Fish> query(RichQuery query);
+
+    void delete(int id);
 }
