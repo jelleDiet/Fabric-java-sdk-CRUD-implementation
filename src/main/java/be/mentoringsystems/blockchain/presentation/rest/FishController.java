@@ -58,8 +58,10 @@ public class FishController {
 
     //Deletes an object by its key
     @RequestMapping("/delete")
-    void deleteFish(@RequestParam UUID id) {
+    String deleteFish(@RequestParam UUID id) {
         fishService.delete(id);
+
+        return id.toString();
     }
 
     //Returns all fish of type tuna
