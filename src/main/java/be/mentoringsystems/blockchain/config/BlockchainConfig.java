@@ -31,7 +31,7 @@ public class BlockchainConfig {
     @Bean
     public NetworkConfig createNetworkConfig() {
         NetworkConfig networkConfig = null;
-        String connectionProfilePath = System.getProperty("user.dir") + "/src/main/resources/connectiondetails/connection.json";
+        String connectionProfilePath = System.getProperty("user.dir") + "/src/main/resources/connectiondetails/connectionPlatform.json";
         File connectionFile = new File(connectionProfilePath);
         try {
             networkConfig = NetworkConfig.fromJsonFile(connectionFile);

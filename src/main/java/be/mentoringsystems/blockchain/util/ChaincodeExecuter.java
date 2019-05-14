@@ -89,6 +89,7 @@ public class ChaincodeExecuter {
 
         // Java sdk will send transaction proposal to all peers, if some peer down but the response still meet the endorsement policy of chaincode,
         // there is no need to retry. If not, you should re-send the transaction proposal.
+         Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, String.format("Sending transactionproposal to chaincode: function = " + func + " args = " + args));
         Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposal(transactionProposalRequest, channel.getPeers());
         for (ProposalResponse response : transactionPropResp) {
 
@@ -162,7 +163,7 @@ public class ChaincodeExecuter {
         } catch (JsonProcessingException | InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "[" + result + "]";
+        return result;
     }
 
     public String queryWithPagination(RichQuery query, int pageSize, String bookmark) {
