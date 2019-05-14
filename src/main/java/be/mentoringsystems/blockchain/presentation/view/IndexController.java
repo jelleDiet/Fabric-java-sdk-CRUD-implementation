@@ -24,17 +24,18 @@ public class IndexController {
     @RequestMapping("/")
     public String welcome(Model model) {
         model.addAttribute("fishes", fishService.getAll());
-        return "welcome";
+        return "index";
     }
 
-    @RequestMapping("/createFish")
+    @RequestMapping("/products/add")
     public String createFish(Model model) {
-        return "add-fish";
+        return "edit";
     }
 
-    @RequestMapping("/queryFish")
+    @RequestMapping("/products")
     public String queryFish(Model model) {
-        return "query-fish";
+         model.addAttribute("fishes", fishService.getAll());
+        return "products";
     }
 
 }

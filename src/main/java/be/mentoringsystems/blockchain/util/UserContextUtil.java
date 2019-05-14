@@ -35,7 +35,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.DatatypeConverter;
+
 import org.hyperledger.fabric.sdk.exception.CryptoException;
 
 /**
@@ -96,73 +96,74 @@ public class UserContextUtil {
 
         return null;
     }
-
-    /**
-     * Create enrollment from key and certificate files.
-     *
-     * @param folderPath
-     * @param keyFileName
-     * @param certFileName
-     * @return
-     * @throws IOException
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws CryptoException
-     */
-    public static CAEnrollment getEnrollment(String keyFolderPath, String keyFileName, String certFolderPath, String certFileName)
-            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, CryptoException {
-        PrivateKey key = null;
-        String certificate = null;
-        InputStream isKey = null;
-        BufferedReader brKey = null;
-
-        try {
-
-            isKey = new FileInputStream(keyFolderPath + File.separator + keyFileName);
-            brKey = new BufferedReader(new InputStreamReader(isKey));
-            StringBuilder keyBuilder = new StringBuilder();
-
-            for (String line = brKey.readLine(); line != null; line = brKey.readLine()) {
-                if (!line.contains("PRIVATE")) {
-                    keyBuilder.append(line);
-                }
-            }
-
-            certificate = new String(Files.readAllBytes(Paths.get(certFolderPath, certFileName)));
-
-            byte[] encoded = DatatypeConverter.parseBase64Binary(keyBuilder.toString());
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
-            KeyFactory kf = KeyFactory.getInstance("ECDSA");
-            key = kf.generatePrivate(keySpec);
-        } finally {
-            isKey.close();
-            brKey.close();
-        }
-
-        CAEnrollment enrollment = new CAEnrollment(key, certificate);
-        return enrollment;
-    }
-
-    public static void cleanUp() {
-        String directoryPath = "users";
-        File directory = new File(directoryPath);
-        deleteDirectory(directory);
-    }
-
-    public static boolean deleteDirectory(File dir) {
-        if (dir.isDirectory()) {
-            File[] children = dir.listFiles();
-            for (File children1 : children) {
-                boolean success = deleteDirectory(children1);
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // either file or an empty directory
-        Logger.getLogger(UserContextUtil.class.getName()).log(Level.INFO, "Deleting - " + dir.getName());
-        return dir.delete();
-    }
-
 }
+
+//    /**
+//     * Create enrollment from key and certificate files.
+//     *
+//     * @param folderPath
+//     * @param keyFileName
+//     * @param certFileName
+//     * @return
+//     * @throws IOException
+//     * @throws NoSuchAlgorithmException
+//     * @throws InvalidKeySpecException
+//     * @throws CryptoException
+//     */
+//    public static CAEnrollment getEnrollment(String keyFolderPath, String keyFileName, String certFolderPath, String certFileName)
+//            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, CryptoException {
+//        PrivateKey key = null;
+//        String certificate = null;
+//        InputStream isKey = null;
+//        BufferedReader brKey = null;
+//
+//        try {
+//
+//            isKey = new FileInputStream(keyFolderPath + File.separator + keyFileName);
+//            brKey = new BufferedReader(new InputStreamReader(isKey));
+//            StringBuilder keyBuilder = new StringBuilder();
+//
+//            for (String line = brKey.readLine(); line != null; line = brKey.readLine()) {
+//                if (!line.contains("PRIVATE")) {
+//                    keyBuilder.append(line);
+//                }
+//            }
+//
+//            certificate = new String(Files.readAllBytes(Paths.get(certFolderPath, certFileName)));
+//
+//            byte[] encoded = DatatypeConverter.parseBase64Binary(keyBuilder.toString());
+//            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
+//            KeyFactory kf = KeyFactory.getInstance("ECDSA");
+//            key = kf.generatePrivate(keySpec);
+//        } finally {
+//            isKey.close();
+//            brKey.close();
+//        }
+//
+//        CAEnrollment enrollment = new CAEnrollment(key, certificate);
+//        return enrollment;
+//    }
+//
+//    public static void cleanUp() {
+//        String directoryPath = "users";
+//        File directory = new File(directoryPath);
+//        deleteDirectory(directory);
+//    }
+//
+//    public static boolean deleteDirectory(File dir) {
+//        if (dir.isDirectory()) {
+//            File[] children = dir.listFiles();
+//            for (File children1 : children) {
+//                boolean success = deleteDirectory(children1);
+//                if (!success) {
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        // either file or an empty directory
+//        Logger.getLogger(UserContextUtil.class.getName()).log(Level.INFO, "Deleting - " + dir.getName());
+//        return dir.delete();
+//    }
+//
+//}

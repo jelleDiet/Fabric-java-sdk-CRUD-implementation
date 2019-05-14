@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Products</title>
+    <th:block th:include="layout/header"></th:block>
+</head>
+<body>
+<div class="container">
+    <div th:if="${not #lists.isEmpty(fish)}">
+        <h2>All Products</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Type</th>
+                <th>Weight</th>
+                <th>Price</th>
+            </tr>
+            <tr th:each="fish : ${fishes}">
+                <td th:text="${fish.type}">Salmon</td>
+                <td th:text="${fish.weight}">2</td>
+                <td th:text="${fish.price}">3</td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
