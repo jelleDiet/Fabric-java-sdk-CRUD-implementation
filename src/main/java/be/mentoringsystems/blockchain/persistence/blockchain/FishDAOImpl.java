@@ -107,4 +107,48 @@ public class FishDAOImpl implements FishDAO {
         return fish;
     }
 
+    @Override
+    public List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark) {
+        List<Fish> fish = new ArrayList<>();
+        TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
+        };
+
+        List<String> index = new ArrayList<>();
+        index.add("_design/indexFishType");
+        index.add("indexFishType");
+        query.setUse_index(index);
+
+        String json = chaincodeExecuter.queryWithPagination(query, pageSize, bookmark);
+
+        try {
+            fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
+        } catch (IOException ex) {
+            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return fish;
+    }
+
+    @Override
+    public List<Fish> getAllWithPagination(int pageSize, String bookmark) {
+        List<Fish> fish = new ArrayList<>();
+        TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
+        };
+
+        RichQuery query = new RichQuery();
+        Map<String, Object> selector = new HashMap<>();
+        selector.put("docType", "fish");
+        query.setSelector(selector);
+
+        String json = chaincodeExecuter.queryWithPagination(query, pageSize, bookmark);
+
+        try {
+            fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
+        } catch (IOException ex) {
+            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return fish;
+    }
+
 }

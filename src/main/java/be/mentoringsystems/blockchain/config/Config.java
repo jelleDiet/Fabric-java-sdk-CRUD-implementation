@@ -14,6 +14,6 @@ public class Config {
 
     public static final String CHAINCODE_1_NAME = "MavenPackage";
 
-    public static final String CHAINCODE_1_VERSION = "22";
+    public static final String CHAINCODE_1_VERSION = "26";
 
 }

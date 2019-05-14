@@ -22,6 +22,10 @@ public interface FishService {
 
     List<Fish> query(RichQuery query);
 
+    List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark);
+
+    List<Fish> getAllWithPagination(int pageSize, String bookmark);
+
     void delete(UUID id);
 
     List<Fish> getAll();

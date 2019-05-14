@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <title>Edit Product Details</title>
+    <title>Edit Fish Details</title>
     <th:block th:include="layout/header"></th:block>
 </head>
 <body>
 <div class="container">
-    <h2>Edit Product Details</h2>
+    <h2>Edit Fish Details</h2>
     <div>
         <form class="form-horizontal" th:object="${fish}" th:action="@{/products/save}" method="post">
             <div class="form-group">

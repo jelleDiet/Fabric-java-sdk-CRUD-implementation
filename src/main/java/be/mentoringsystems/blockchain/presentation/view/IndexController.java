@@ -30,7 +30,6 @@ public class IndexController {
 
     @RequestMapping("/")
     public String welcome(Model model) {
-        model.addAttribute("fishes", fishService.getAll());
         return "index";
     }
 

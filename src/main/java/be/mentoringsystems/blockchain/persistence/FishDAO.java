@@ -23,8 +23,12 @@ public interface FishDAO {
 
     List<Fish> query(RichQuery query);
 
+    List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark);
+
     void delete(UUID id);
 
     List<Fish> getAll();
+
+    List<Fish> getAllWithPagination(int pageSize, String bookmark);
 
 }

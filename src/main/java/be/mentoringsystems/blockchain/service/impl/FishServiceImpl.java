@@ -49,4 +49,14 @@ public class FishServiceImpl implements FishService {
         return fishDAO.getAll();
     }
 
+    @Override
+    public List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark) {
+        return fishDAO.queryWithPagination(query, pageSize, bookmark);
+    }
+
+    @Override
+    public List<Fish> getAllWithPagination(int pageSize, String bookmark) {
+        return fishDAO.getAllWithPagination(pageSize, bookmark);
+    }
+
 }

@@ -165,4 +165,15 @@ public class ChaincodeExecuter {
         return "[" + result + "]";
     }
 
+    public String queryWithPagination(RichQuery query, int pageSize, String bookmark) {
+        String result = "";
+        try {
+            String[] args = {Mapper.INSTANCE.getObjectMapper().writeValueAsString(query), String.valueOf(pageSize), bookmark};
+            result = executeTransaction(false, "queryWithPagination", args);
+        } catch (JsonProcessingException | InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "[" + result + "]";
+    }
+
 }

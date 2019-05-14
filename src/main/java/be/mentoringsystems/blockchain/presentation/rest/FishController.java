@@ -84,4 +84,10 @@ public class FishController {
         return fishService.query(query);
     }
 
+    //Returns all fish of type tuna
+    @RequestMapping("/queryWithPagination")
+    List<Fish> queryWithPagination(@RequestParam(required = false) String bookmark) {
+        return fishService.getAllWithPagination(5, bookmark);
+    }
+
 }
