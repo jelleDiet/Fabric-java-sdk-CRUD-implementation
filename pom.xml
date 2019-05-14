@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -16,6 +17,10 @@
     <properties>
         <java.version>1.8</java.version>
         <fabric-version>1.4.1</fabric-version>
+        <javaee-api-version>8.0.1</javaee-api-version>
+        <google-api-version>1.8.1</google-api-version>
+        <guava-version>27.1-jre</guava-version>
+        <bootstrap-version>3.3.7-1</bootstrap-version>
     </properties>
 
     <dependencies>
@@ -40,25 +45,19 @@
         </dependency>
         <dependency>
             <groupId>javax</groupId>
-            <artifactId>javaee-endorsed-api</artifactId>
-            <version>7.0</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>8.0</version> 
+            <version>${javaee-api-version}</version> 
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.api</groupId>
             <artifactId>api-common</artifactId>
-            <version>1.6.0</version>
+            <version>${google-api-version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>27.1-jre</version>
+            <version>${guava-version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -67,7 +66,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.3.7-1</version>
+            <version>${bootstrap-version}</version>
         </dependency>
     </dependencies>
 

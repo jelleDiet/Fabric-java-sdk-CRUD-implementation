@@ -64,6 +64,11 @@ public class FishDAOImpl implements FishDAO {
         TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
         };
 
+        List<String> index = new ArrayList<>();
+        index.add("_design/indexFishType");
+        index.add("indexFishType");
+        query.setUse_index(index);
+
         String json = chaincodeExecuter.query(query);
 
         try {
