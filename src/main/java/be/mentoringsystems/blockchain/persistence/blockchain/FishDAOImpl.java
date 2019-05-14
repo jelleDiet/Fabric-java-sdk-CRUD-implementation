@@ -48,6 +48,9 @@ public class FishDAOImpl implements FishDAO {
 
     @Override
     public void save(Fish fish) {
+        if(fish.getId() == null) {
+            fish.setId(UUID.randomUUID());
+        }
         String json = "";
         try {
             json = Mapper.INSTANCE.getObjectMapper().writeValueAsString(fish);

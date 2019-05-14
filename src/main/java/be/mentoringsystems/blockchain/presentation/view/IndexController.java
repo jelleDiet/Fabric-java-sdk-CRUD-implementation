@@ -91,7 +91,6 @@ public class IndexController {
         Fish fish;
         if (id == null) {
             fish = new Fish();
-            fish.setId(UUID.randomUUID());
         } else {
             fish = fishService.getById(id);
         }

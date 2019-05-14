@@ -46,7 +46,6 @@ public class FishController {
     Fish saveFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price) {
 
         Fish fish = new Fish();
-        fish.setId(UUID.randomUUID());
         fish.setType(type);
         fish.setPrice(price);
         if (weight != null) {
