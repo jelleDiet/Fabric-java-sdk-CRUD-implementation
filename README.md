@@ -27,15 +27,16 @@ A step by step series of examples that tell you how to get a development env run
 3. Get your chaincode and package, install and instantiate it on your peer
 4. Get your network details from your peer using export connection details
 5. Replace the connecion.json file with your connection details (the file provided is the details IBM plugin uses)
-6. Clone this repository and build it using maven
+6. Fill out the Config class with your network and chaincode info
+7. Clone this repository and build it using maven
 
 ### Running
 
-Run the Main.java file, which will enroll an admin, register and enroll a user, and write a key/value pair to your blockchain. You can also delete or read from the world state.
+Run the project on a server (for example on tomcat), it will deploy to 8081/blockchain
 
 ### Rich querying
 
-The default way to query the database is by key. Fabric networks using couchDB also allow rich querying to give more flexibility in the way the blockchain can be queried. There is a small example in the code, for an example see:
+The default way to query the database is by key. Fabric networks using couchDB also allow rich querying to give more flexibility in the way the blockchain can be queried. There is a small example in the code, for more info see:
 https://medium.com/wearetheledger/hyperledger-fabric-couchdb-fantastic-queries-and-where-to-find-them-f8a3aecef767
 
 ## Built With
