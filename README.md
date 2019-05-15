@@ -6,7 +6,7 @@ Example of using the fabric-java-sdk to connect to your hyperledger fabric block
 
 For an example of java chaincode that goes along with this sdk implementation, see [java chaincode](https://github.com/jelleDiet/Java_chaincode_example)
 
-For an example of node chaincode (the chaincode instantiated on the cloud) see [node chaincode](https://github.com/jelleDiet/Fabric-node-chaincode-example)
+For an example of node chaincode (This is the default chaincode used) see [node chaincode](https://github.com/jelleDiet/Fabric-node-chaincode-example)
 
 For local development and testing I recommend using the IBM VScode blockchain plugin to create a network, package and install the chaincode. The plugin can be found [here](https://marketplace.visualstudio.com/items?itemName=IBMBlockchain.ibm-blockchain-platform)
 
