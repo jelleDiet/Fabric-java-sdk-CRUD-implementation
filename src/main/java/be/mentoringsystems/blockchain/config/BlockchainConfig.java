@@ -66,10 +66,10 @@ public class BlockchainConfig {
         UserContext adminUserContext = null;
 
         adminUserContext = new UserContext();
-        adminUserContext.setName(Config.ADMIN_NAME); // admin username
-        adminUserContext.setAffiliation(Config.ORG1_NAME); // affiliation
-        adminUserContext.setMspId(Config.ORG1_MSP); // org1 mspid
-        Enrollment adminEnrollment = hfcaClient.enroll(Config.ADMIN_NAME, Config.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
+        adminUserContext.setName(ChaincodeConfig.ADMIN_NAME); // admin username
+        adminUserContext.setAffiliation(ChaincodeConfig.ORG1_NAME); // affiliation
+        adminUserContext.setMspId(ChaincodeConfig.ORG1_MSP); // org1 mspid
+        Enrollment adminEnrollment = hfcaClient.enroll(ChaincodeConfig.ADMIN_NAME, ChaincodeConfig.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
         adminUserContext.setEnrollment(adminEnrollment);
 
         return adminUserContext;
@@ -89,9 +89,9 @@ public class BlockchainConfig {
     @Bean
     public Channel createChannel() throws Exception {
         HFClient hfClient = createHFClient();
-        Channel newChannel = hfClient.loadChannelFromConfig(Config.CHANNEL_NAME, createNetworkConfig());
+        Channel newChannel = hfClient.loadChannelFromConfig(ChaincodeConfig.CHANNEL_NAME, createNetworkConfig());
         if (newChannel == null) {
-            throw new RuntimeException("Channel " + Config.CHANNEL_NAME + " is not defined in the config file!");
+            throw new RuntimeException("Channel " + ChaincodeConfig.CHANNEL_NAME + " is not defined in the config file!");
         }
 
         return newChannel.initialize();

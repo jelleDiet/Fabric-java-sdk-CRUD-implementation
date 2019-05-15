@@ -1,6 +1,6 @@
 package be.mentoringsystems.blockchain.config;
 
-public class Config {
+public class ChaincodeConfig {
 
     public static final String ORG1_MSP = "Org1MSP";
 
@@ -14,6 +14,6 @@ public class Config {
 
     public static final String CHAINCODE_1_NAME = "NodeChaincodeExample";
 
-    public static final String CHAINCODE_1_VERSION = "0.0.11";
+    public static final String CHAINCODE_1_VERSION = "0.1.0";
 
 }

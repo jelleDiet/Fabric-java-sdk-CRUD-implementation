@@ -38,17 +38,19 @@ public class FishDAOImpl implements FishDAO {
         String key = String.valueOf(id);
         String json = chaincodeExecuter.getObjectByKey(key);
         Fish fish = null;
-        try {
-            fish = Mapper.INSTANCE.getObjectMapper().readValue(json, Fish.class);
-        } catch (IOException ex) {
-            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        if (json != null && !json.isEmpty()) {
+            try {
+                fish = Mapper.INSTANCE.getObjectMapper().readValue(json, Fish.class);
+            } catch (IOException ex) {
+                Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return fish;
     }
 
     @Override
     public void save(Fish fish) {
-        if(fish.getId() == null) {
+        if (fish.getId() == null) {
             fish.setId(UUID.randomUUID());
         }
         String json = "";

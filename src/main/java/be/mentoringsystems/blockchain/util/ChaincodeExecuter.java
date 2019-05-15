@@ -9,7 +9,7 @@ package be.mentoringsystems.blockchain.util;
  *
  * @author jellediet
  */
-import be.mentoringsystems.blockchain.config.Config;
+import be.mentoringsystems.blockchain.config.ChaincodeConfig;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
@@ -71,8 +71,8 @@ public class ChaincodeExecuter {
     public String executeTransaction(boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
 
         ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
-                .setName(Config.CHAINCODE_1_NAME)
-                .setVersion(Config.CHAINCODE_1_VERSION);
+                .setName(ChaincodeConfig.CHAINCODE_1_NAME)
+                .setVersion(ChaincodeConfig.CHAINCODE_1_VERSION);
         ccId = chaincodeIDBuilder.build();
 
         TransactionProposalRequest transactionProposalRequest = hfClient.newTransactionProposalRequest();
@@ -89,7 +89,7 @@ public class ChaincodeExecuter {
 
         // Java sdk will send transaction proposal to all peers, if some peer down but the response still meet the endorsement policy of chaincode,
         // there is no need to retry. If not, you should re-send the transaction proposal.
-         Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, String.format("Sending transactionproposal to chaincode: function = " + func + " args = " + args));
+        Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, String.format("Sending transactionproposal to chaincode: function = " + func + " args = " + String.join(" , ", args)));
         Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposal(transactionProposalRequest, channel.getPeers());
         for (ProposalResponse response : transactionPropResp) {
 

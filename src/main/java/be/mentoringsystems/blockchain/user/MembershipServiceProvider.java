@@ -6,7 +6,7 @@
  */
 package be.mentoringsystems.blockchain.user;
 
-import be.mentoringsystems.blockchain.config.Config;
+import be.mentoringsystems.blockchain.config.ChaincodeConfig;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.sdk.Enrollment;
@@ -27,10 +27,10 @@ public class MembershipServiceProvider {
         UserContext adminUserContext = null;
 
         adminUserContext = new UserContext();
-        adminUserContext.setName(Config.ADMIN_NAME); // admin username
+        adminUserContext.setName(ChaincodeConfig.ADMIN_NAME); // admin username
         adminUserContext.setAffiliation(affiliation); // affiliation
         adminUserContext.setMspId(mspId); // org1 mspid
-        Enrollment adminEnrollment = hfcaClient.enroll(Config.ADMIN_NAME, Config.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
+        Enrollment adminEnrollment = hfcaClient.enroll(ChaincodeConfig.ADMIN_NAME, ChaincodeConfig.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
         adminUserContext.setEnrollment(adminEnrollment);
 
         return adminUserContext;
