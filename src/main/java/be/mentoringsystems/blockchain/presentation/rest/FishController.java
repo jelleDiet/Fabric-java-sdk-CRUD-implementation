@@ -35,7 +35,7 @@ public class FishController {
         return fishService.getById(id);
     }
 
-    //Gets a fish using id as key
+    //Get all fish
     @RequestMapping("/getAll")
     List<Fish> getAllFish() {
         return fishService.getAll();
@@ -63,7 +63,7 @@ public class FishController {
         return id.toString();
     }
 
-    //Returns all fish of type tuna
+    //Search all documents in the blockchain with docType fish and the given selector parameters
     @RequestMapping("/query")
     List<Fish> queryFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price) {
         RichQuery query = new RichQuery();
@@ -83,7 +83,7 @@ public class FishController {
         return fishService.query(query);
     }
 
-    //Returns all fish of type tuna
+    //Not functional yet
     @RequestMapping("/queryWithPagination")
     List<Fish> queryWithPagination(@RequestParam(required = false) String bookmark) {
         return fishService.getAllWithPagination(5, bookmark);
