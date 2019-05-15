@@ -6,9 +6,9 @@ Example of using the fabric-java-sdk to connect to your hyperledger fabric block
 
 For an example of java chaincode that goes along with this sdk implementation, see [java chaincode](https://github.com/jelleDiet/Java_chaincode_example)
 
-For local development and testing I recommend using the IBM VScode blockchain plugin to create a network, package and install the chaincode. The plugin can be found [here](https://marketplace.visualstudio.com/items?itemName=IBMBlockchain.ibm-blockchain-platform)
+For an example of node chaincode (the chaincode instantiated on the cloud) see [node chaincode](https://github.com/jelleDiet/Fabric-node-chaincode-example)
 
-If you would like to write your own chaincode you can follow this [tutorial](https://developer.ibm.com/tutorials/ibm-blockchain-platform-vscode-smart-contract/)
+For local development and testing I recommend using the IBM VScode blockchain plugin to create a network, package and install the chaincode. The plugin can be found [here](https://marketplace.visualstudio.com/items?itemName=IBMBlockchain.ibm-blockchain-platform)
 
 ### Prerequisites
 
@@ -22,13 +22,8 @@ A running blockchain network with chaincode instantiated.
 
 A step by step series of examples that tell you how to get a development env running
 
-1. Start your blockchain network
-2. Register an admin with username "admin" and pw "adminpw". Most fabric networks (including plugin) do this automatically
-3. Get your chaincode and package, install and instantiate it on your peer
-4. Get your network details from your peer using export connection details
-5. Replace the connecion.json file with your connection details (the file provided is the details IBM plugin uses)
-6. Fill out the Config class with your network and chaincode info
-7. Clone this repository and build it using maven
+1. Clone this repository and build it using maven
+2. This sdk connects to chaincode runnning on the IBM cloud, to connect locally you will have to start your own network.
 
 ### Running
 
