@@ -39,6 +39,8 @@ https://medium.com/wearetheledger/hyperledger-fabric-couchdb-fantastic-queries-a
 * Java 1.8
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Fabric-java-sdk](https://github.com/hyperledger/fabric-sdk-java/) 1.4.1
+* Spring Boot
+* Thymeleaf
 
 ## Authors
 
