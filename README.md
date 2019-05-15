@@ -4,6 +4,8 @@ Example of using the fabric-java-sdk to connect to your hyperledger fabric block
 
 ## Getting Started
 
+The Fabric SDKs are used to connect to a network and call chaincode. The chaincode will then query or modify the ledger.
+
 For an example of java chaincode that goes along with this sdk implementation, see [java chaincode](https://github.com/jelleDiet/Java_chaincode_example)
 
 For an example of node chaincode (This is the default chaincode used) see [node chaincode](https://github.com/jelleDiet/Fabric-node-chaincode-example)
