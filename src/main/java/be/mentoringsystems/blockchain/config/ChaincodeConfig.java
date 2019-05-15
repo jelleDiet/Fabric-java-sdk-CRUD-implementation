@@ -4,7 +4,7 @@ public class ChaincodeConfig {
 
     public static final String ORG1_MSP = "Org1MSP";
 
-    public static final String ORG1_NAME = "Org1 MSP";
+    public static final String ORG1_NAME = "Org1";
 
     public static final String ADMIN_NAME = "admin";
 
@@ -14,6 +14,6 @@ public class ChaincodeConfig {
 
     public static final String CHAINCODE_1_NAME = "NodeChaincodeExample";
 
-    public static final String CHAINCODE_1_VERSION = "0.1.0";
+    public static final String CHAINCODE_1_VERSION = "0.1.4";
 
 }
