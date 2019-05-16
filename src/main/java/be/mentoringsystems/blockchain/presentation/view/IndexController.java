@@ -72,6 +72,7 @@ public class IndexController {
         query.setSelector(selector);
 
         model.addAttribute("fishes", fishService.query(query, channel));
+        model.addAttribute("channel", channel);
         return "products";
     }
 
