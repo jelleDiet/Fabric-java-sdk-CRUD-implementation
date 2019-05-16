@@ -16,17 +16,17 @@ import java.util.UUID;
  */
 public interface FishService {
 
-    Fish getById(UUID id);
+    Fish getById(UUID id, String channelName);
 
-    void save(Fish fish);
+    void save(Fish fish, String channelName);
 
-    List<Fish> query(RichQuery query);
+    List<Fish> query(RichQuery query, String channelName);
 
-    List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark);
+    List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark, String channelName);
 
-    List<Fish> getAllWithPagination(int pageSize, String bookmark);
+    List<Fish> getAllWithPagination(int pageSize, String bookmark, String channelName);
 
-    void delete(UUID id);
+    void delete(UUID id, String channelName);
 
-    List<Fish> getAll();
+    List<Fish> getAll(String channelName);
 }

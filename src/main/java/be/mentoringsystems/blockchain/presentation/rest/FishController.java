@@ -31,19 +31,20 @@ public class FishController {
 
     //Gets a fish using id as key
     @RequestMapping("/get")
-    Fish getFish(@RequestParam UUID id) {
-        return fishService.getById(id);
+    Fish getFish(@RequestParam UUID id, @RequestParam(defaultValue = "channel1") String channel) {
+        return fishService.getById(id, channel);
     }
 
     //Get all fish
     @RequestMapping("/getAll")
-    List<Fish> getAllFish() {
-        return fishService.getAll();
+    List<Fish> getAllFish(@RequestParam(defaultValue = "channel1") String channel) {
+        return fishService.getAll(channel);
+
     }
 
     //Saves a fish using id as key
     @RequestMapping("/save")
-    Fish saveFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price) {
+    Fish saveFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price, @RequestParam(defaultValue = "channel1") String channel) {
 
         Fish fish = new Fish();
         fish.setType(type);
@@ -51,21 +52,21 @@ public class FishController {
         if (weight != null) {
             fish.setWeight(weight);
         }
-        fishService.save(fish);
+        fishService.save(fish, channel);
         return fish;
     }
 
     //Deletes an object by its key
     @RequestMapping("/delete")
-    String deleteFish(@RequestParam UUID id) {
-        fishService.delete(id);
+    String deleteFish(@RequestParam UUID id, @RequestParam(defaultValue = "channel1") String channel) {
+        fishService.delete(id, channel);
 
         return id.toString();
     }
 
     //Search all documents in the blockchain with docType fish and the given selector parameters
     @RequestMapping("/query")
-    List<Fish> queryFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price) {
+    List<Fish> queryFish(@RequestParam(required = false) String type, @RequestParam(required = false) Double weight, @RequestParam(required = false) BigDecimal price, @RequestParam(defaultValue = "channel1") String channel) {
         RichQuery query = new RichQuery();
         Map<String, Object> selector = new HashMap<>();
         if (type != null && !type.isEmpty()) {
@@ -80,13 +81,13 @@ public class FishController {
         selector.put("docType", "fish");
         query.setSelector(selector);
 
-        return fishService.query(query);
+        return fishService.query(query, channel);
     }
 
     //Not functional yet
     @RequestMapping("/queryWithPagination")
-    List<Fish> queryWithPagination(@RequestParam(required = false) String bookmark) {
-        return fishService.getAllWithPagination(5, bookmark);
+    List<Fish> queryWithPagination(@RequestParam(required = false) String bookmark, @RequestParam(defaultValue = "channel1") String channel) {
+        return fishService.getAllWithPagination(5, bookmark, channel);
     }
 
 }

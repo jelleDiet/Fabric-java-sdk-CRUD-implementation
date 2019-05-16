@@ -36,12 +36,12 @@ public class IndexController {
     @RequestMapping("/products/add")
     public String createFish(Model model) {
         model.addAttribute("fish", new Fish());
-        return "edit";
+        return "create";
     }
 
     @RequestMapping("/products/edit")
-    public String editFish(@RequestParam UUID id, Model model) {
-        model.addAttribute("fish", fishService.getById(id));
+    public String editFish(@RequestParam UUID id, Model model, @RequestParam(defaultValue = "channel1") String channel) {
+        model.addAttribute("fish", fishService.getById(id, channel));
         return "edit";
     }
 
@@ -52,7 +52,7 @@ public class IndexController {
     }
 
     @RequestMapping("/products/query")
-    public String queryFish(@RequestParam(required = false) String type, @RequestParam(required = false) BigDecimal price, @RequestParam(required = false) Double weight, Model model) {
+    public String queryFish(@RequestParam(required = false) String type, @RequestParam(required = false) BigDecimal price, @RequestParam(required = false) Double weight, Model model, @RequestParam(defaultValue = "channel1") String channel) {
         RichQuery query = new RichQuery();
         Map<String, Object> selector = new HashMap<>();
         if (type != null && !type.isEmpty()) {
@@ -70,29 +70,30 @@ public class IndexController {
 
         query.setSelector(selector);
 
-        model.addAttribute("fishes", fishService.query(query));
+        model.addAttribute("fishes", fishService.query(query, channel));
         return "products";
     }
 
     @RequestMapping("/products")
-    public String getAllFish(Model model) {
-        model.addAttribute("fishes", fishService.getAll());
+    public String getAllFish(Model model, @RequestParam(defaultValue = "channel1") String channel) {
+        model.addAttribute("fishes", fishService.getAll(channel));
+        model.addAttribute("channel", channel);
         return "products";
     }
 
     @RequestMapping("/products/delete")
-    public String deleteFish(@RequestParam UUID id) {
-        fishService.delete(id);
+    public String deleteFish(@RequestParam UUID id, @RequestParam(defaultValue = "channel1") String channel) {
+        fishService.delete(id, channel);
         return "redirect:/products";
     }
 
     @RequestMapping("/products/save")
-    public String saveFish(@RequestParam UUID id, @RequestParam String type, @RequestParam BigDecimal price, @RequestParam Double weight) {
+    public String saveFish(@RequestParam UUID id, @RequestParam String type, @RequestParam BigDecimal price, @RequestParam Double weight, @RequestParam(defaultValue = "channel1") String channel) {
         Fish fish;
         if (id == null) {
             fish = new Fish();
         } else {
-            fish = fishService.getById(id);
+            fish = fishService.getById(id, channel);
         }
 
         fish.setType(type);
@@ -101,7 +102,7 @@ public class IndexController {
 
         fish.setWeight(weight);
 
-        fishService.save(fish);
+        fishService.save(fish, channel);
 
         return "redirect:/products";
     }

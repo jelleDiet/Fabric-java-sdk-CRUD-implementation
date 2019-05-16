@@ -25,38 +25,38 @@ public class FishServiceImpl implements FishService {
     FishDAO fishDAO;
 
     @Override
-    public Fish getById(UUID id) {
-        return fishDAO.getById(id);
+    public Fish getById(UUID id, String channelName) {
+        return fishDAO.getById(id, channelName);
     }
 
     @Override
-    public void save(Fish fish) {
-        fishDAO.save(fish);
+    public void save(Fish fish, String channelName) {
+        fishDAO.save(fish, channelName);
     }
 
     @Override
-    public List<Fish> query(RichQuery query) {
-        return fishDAO.query(query);
+    public List<Fish> query(RichQuery query, String channelName) {
+        return fishDAO.query(query, channelName);
     }
 
     @Override
-    public void delete(UUID id) {
-        fishDAO.delete(id);
+    public void delete(UUID id, String channelName) {
+        fishDAO.delete(id, channelName);
     }
 
     @Override
-    public List<Fish> getAll() {
-        return fishDAO.getAll();
+    public List<Fish> getAll(String channelName) {
+        return fishDAO.getAll(channelName);
     }
 
     @Override
-    public List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark) {
-        return fishDAO.queryWithPagination(query, pageSize, bookmark);
+    public List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark, String channelName) {
+        return fishDAO.queryWithPagination(query, pageSize, bookmark, channelName);
     }
 
     @Override
-    public List<Fish> getAllWithPagination(int pageSize, String bookmark) {
-        return fishDAO.getAllWithPagination(pageSize, bookmark);
+    public List<Fish> getAllWithPagination(int pageSize, String bookmark, String channelName) {
+        return fishDAO.getAllWithPagination(pageSize, bookmark, channelName);
     }
 
 }

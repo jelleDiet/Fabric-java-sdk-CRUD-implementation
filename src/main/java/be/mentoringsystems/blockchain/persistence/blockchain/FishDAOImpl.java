@@ -34,9 +34,9 @@ public class FishDAOImpl implements FishDAO {
     ChaincodeExecuter chaincodeExecuter;
 
     @Override
-    public Fish getById(UUID id) {
+    public Fish getById(UUID id, String channelName) {
         String key = String.valueOf(id);
-        String json = chaincodeExecuter.getObjectByKey(key);
+        String json = chaincodeExecuter.getObjectByKey(key, channelName);
         Fish fish = null;
         if (json != null && !json.isEmpty()) {
             try {
@@ -49,7 +49,7 @@ public class FishDAOImpl implements FishDAO {
     }
 
     @Override
-    public void save(Fish fish) {
+    public void save(Fish fish, String channelName) {
         if (fish.getId() == null) {
             fish.setId(UUID.randomUUID());
         }
@@ -60,11 +60,11 @@ public class FishDAOImpl implements FishDAO {
             Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        chaincodeExecuter.saveObject(String.valueOf(fish.getId()), json);
+        chaincodeExecuter.saveObject(String.valueOf(fish.getId()), json, channelName);
     }
 
     @Override
-    public List<Fish> query(RichQuery query) {
+    public List<Fish> query(RichQuery query, String channelName) {
         List<Fish> fish = new ArrayList<>();
         TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
         };
@@ -74,7 +74,7 @@ public class FishDAOImpl implements FishDAO {
         index.add("indexFishType");
         query.setUse_index(index);
 
-        String json = chaincodeExecuter.query(query);
+        String json = chaincodeExecuter.query(query, channelName);
 
         try {
             fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
@@ -86,12 +86,12 @@ public class FishDAOImpl implements FishDAO {
     }
 
     @Override
-    public void delete(UUID id) {
-        chaincodeExecuter.deleteObject(String.valueOf(id));
+    public void delete(UUID id, String channelName) {
+        chaincodeExecuter.deleteObject(String.valueOf(id), channelName);
     }
 
     @Override
-    public List<Fish> getAll() {
+    public List<Fish> getAll(String channelName) {
         List<Fish> fish = new ArrayList<>();
         TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
         };
@@ -101,7 +101,7 @@ public class FishDAOImpl implements FishDAO {
         selector.put("docType", "fish");
         query.setSelector(selector);
 
-        String json = chaincodeExecuter.query(query);
+        String json = chaincodeExecuter.query(query, channelName);
 
         try {
             fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
@@ -113,7 +113,7 @@ public class FishDAOImpl implements FishDAO {
     }
 
     @Override
-    public List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark) {
+    public List<Fish> queryWithPagination(RichQuery query, int pageSize, String bookmark, String channelName) {
         List<Fish> fish = new ArrayList<>();
         TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
         };
@@ -123,7 +123,7 @@ public class FishDAOImpl implements FishDAO {
         index.add("indexFishType");
         query.setUse_index(index);
 
-        String json = chaincodeExecuter.queryWithPagination(query, pageSize, bookmark);
+        String json = chaincodeExecuter.queryWithPagination(query, pageSize, bookmark, channelName);
 
         try {
             fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
@@ -135,7 +135,7 @@ public class FishDAOImpl implements FishDAO {
     }
 
     @Override
-    public List<Fish> getAllWithPagination(int pageSize, String bookmark) {
+    public List<Fish> getAllWithPagination(int pageSize, String bookmark, String channelName) {
         List<Fish> fish = new ArrayList<>();
         TypeReference<List<Fish>> listType = new TypeReference<List<Fish>>() {
         };
@@ -145,7 +145,7 @@ public class FishDAOImpl implements FishDAO {
         selector.put("docType", "fish");
         query.setSelector(selector);
 
-        String json = chaincodeExecuter.queryWithPagination(query, pageSize, bookmark);
+        String json = chaincodeExecuter.queryWithPagination(query, pageSize, bookmark, channelName);
 
         try {
             fish = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);

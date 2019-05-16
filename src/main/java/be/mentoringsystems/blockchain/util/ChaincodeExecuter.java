@@ -40,16 +40,16 @@ public class ChaincodeExecuter {
     private String version;
     private ChaincodeID ccId;
     private long waitTime = 6000; //Milliseconds
-    
+
     @Autowired
     @Qualifier("channel1")
     Channel channel1;
-    
+
     @Autowired
     @Qualifier("channel2")
     Channel channel2;
-    
-    @Autowired       
+
+    @Autowired
     HFClient hfClient;
 
     public String getChaincodeName() {
@@ -76,7 +76,7 @@ public class ChaincodeExecuter {
         this.waitTime = waitTime;
     }
 
-    public String executeTransaction(boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
+    public String executeTransaction(Channel channel, boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
 
         ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
                 .setName(ChaincodeConfig.CHAINCODE_1_NAME)
@@ -98,7 +98,7 @@ public class ChaincodeExecuter {
         // Java sdk will send transaction proposal to all peers, if some peer down but the response still meet the endorsement policy of chaincode,
         // there is no need to retry. If not, you should re-send the transaction proposal.
         Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, String.format("Sending transactionproposal to chaincode: function = " + func + " args = " + String.join(" , ", args)));
-        Collection<ProposalResponse> transactionPropResp = channel1.sendTransactionProposal(transactionProposalRequest, channel1.getPeers());
+        Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposal(transactionProposalRequest, channel.getPeers());
         for (ProposalResponse response : transactionPropResp) {
 
             if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
@@ -116,7 +116,7 @@ public class ChaincodeExecuter {
         if (invoke) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Sending transaction to orderers...");
             // Java sdk tries all orderers to send transaction, so don't worry about one orderer gone.
-            channel1.sendTransaction(successful).thenApply(transactionEvent -> {
+            channel.sendTransaction(successful).thenApply(transactionEvent -> {
                 Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: txid: " + transactionEvent.getTransactionID());
                 Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: block number: " + transactionEvent.getBlockEvent().getBlockNumber());
                 return null;
@@ -128,12 +128,23 @@ public class ChaincodeExecuter {
         return payload;
     }
 
-    public String saveObject(String key, String json) {
+    public String saveObject(String key, String json, String channelName) {
 
         String result = "";
+        Channel channel = null;
+        switch (channelName) {
+            case "channel1":
+                channel = channel1;
+                break;
+            case "channel2":
+                channel = channel2;
+                break;
+            default:
+                Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, "Channel not found");
+        }
         String[] args = {key, json};
         try {
-            result = executeTransaction(true, "set", args);
+            result = executeTransaction(channel, true, "set", args);
         } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,10 +152,11 @@ public class ChaincodeExecuter {
         return result;
     }
 
-    public String getObjectByKey(String key) {
+    public String getObjectByKey(String key, String channelName) {
         String result = "";
+        Channel channel = getChannelByName(channelName);
         try {
-            result = executeTransaction(false, "get", key);
+            result = executeTransaction(channel, false, "get", key);
         } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -152,10 +164,11 @@ public class ChaincodeExecuter {
         return result;
     }
 
-    public String deleteObject(String key) {
+    public String deleteObject(String key, String channelName) {
         String result = "";
+        Channel channel = getChannelByName(channelName);
         try {
-            result = executeTransaction(true, "delete", key);
+            result = executeTransaction(channel, true, "delete", key);
         } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -163,26 +176,43 @@ public class ChaincodeExecuter {
         return result;
     }
 
-    public String query(RichQuery query) {
+    public String query(RichQuery query, String channelName) {
         String result = "";
+        Channel channel = getChannelByName(channelName);
         try {
             String[] args = {Mapper.INSTANCE.getObjectMapper().writeValueAsString(query)};
-            result = executeTransaction(false, "query", args);
+            result = executeTransaction(channel, false, "query", args);
         } catch (JsonProcessingException | InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
 
-    public String queryWithPagination(RichQuery query, int pageSize, String bookmark) {
+    public String queryWithPagination(RichQuery query, int pageSize, String bookmark, String channelName) {
         String result = "";
+        Channel channel = getChannelByName(channelName);
         try {
             String[] args = {Mapper.INSTANCE.getObjectMapper().writeValueAsString(query), String.valueOf(pageSize), bookmark};
-            result = executeTransaction(false, "queryWithPagination", args);
+            result = executeTransaction(channel, false, "queryWithPagination", args);
         } catch (JsonProcessingException | InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "[" + result + "]";
+    }
+
+    private Channel getChannelByName(String channelName) {
+        Channel channel = null;
+        switch (channelName) {
+            case "channel1":
+                channel = channel1;
+                break;
+            case "channel2":
+                channel = channel2;
+                break;
+            default:
+                Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, "Channel not found");
+        }
+        return channel;
     }
 
 }
