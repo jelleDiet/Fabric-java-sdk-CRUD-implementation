@@ -36,6 +36,10 @@ Run the project on a server (for example on tomcat), it will deploy to 8081/bloc
 The default way to query the database is by key. Fabric networks using couchDB also allow rich querying to give more flexibility in the way the blockchain can be queried. There is a small example in the code, for more info see:
 https://medium.com/wearetheledger/hyperledger-fabric-couchdb-fantastic-queries-and-where-to-find-them-f8a3aecef767
 
+### Channels
+
+The application uses two different channels for 'north american' and 'european' fish. These two channels have their own ledgers and can not swap data in any way, even if they have the same peer.
+
 ## Built With
 
 * Java 1.8
