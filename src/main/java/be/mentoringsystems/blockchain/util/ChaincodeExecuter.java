@@ -30,6 +30,7 @@ import org.hyperledger.fabric.sdk.TransactionRequest;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,9 +40,16 @@ public class ChaincodeExecuter {
     private String version;
     private ChaincodeID ccId;
     private long waitTime = 6000; //Milliseconds
+    
     @Autowired
-    Channel channel;
+    @Qualifier("channel1")
+    Channel channel1;
+    
     @Autowired
+    @Qualifier("channel2")
+    Channel channel2;
+    
+    @Autowired       
     HFClient hfClient;
 
     public String getChaincodeName() {
@@ -90,7 +98,7 @@ public class ChaincodeExecuter {
         // Java sdk will send transaction proposal to all peers, if some peer down but the response still meet the endorsement policy of chaincode,
         // there is no need to retry. If not, you should re-send the transaction proposal.
         Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, String.format("Sending transactionproposal to chaincode: function = " + func + " args = " + String.join(" , ", args)));
-        Collection<ProposalResponse> transactionPropResp = channel.sendTransactionProposal(transactionProposalRequest, channel.getPeers());
+        Collection<ProposalResponse> transactionPropResp = channel1.sendTransactionProposal(transactionProposalRequest, channel1.getPeers());
         for (ProposalResponse response : transactionPropResp) {
 
             if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
@@ -108,7 +116,7 @@ public class ChaincodeExecuter {
         if (invoke) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Sending transaction to orderers...");
             // Java sdk tries all orderers to send transaction, so don't worry about one orderer gone.
-            channel.sendTransaction(successful).thenApply(transactionEvent -> {
+            channel1.sendTransaction(successful).thenApply(transactionEvent -> {
                 Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: txid: " + transactionEvent.getTransactionID());
                 Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: block number: " + transactionEvent.getBlockEvent().getBlockNumber());
                 return null;

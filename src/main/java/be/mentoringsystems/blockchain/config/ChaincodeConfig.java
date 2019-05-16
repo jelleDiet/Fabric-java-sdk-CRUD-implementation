@@ -10,7 +10,9 @@ public class ChaincodeConfig {
 
     public static final String ADMIN_PASSWORD = "adminpw";
 
-    public static final String CHANNEL_NAME = "channel1";
+    public static final String CHANNEL_1_NAME = "channel1";
+    
+    public static final String CHANNEL_2_NAME = "channel2";
 
     public static final String CHAINCODE_1_NAME = "NodeChaincodeExample";
 

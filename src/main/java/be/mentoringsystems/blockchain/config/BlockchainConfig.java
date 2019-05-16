@@ -86,12 +86,23 @@ public class BlockchainConfig {
         return hfClient;
     }
 
-    @Bean
-    public Channel createChannel() throws Exception {
+    @Bean(name = "channel1")
+    public Channel createChannel1() throws Exception {
         HFClient hfClient = createHFClient();
-        Channel newChannel = hfClient.loadChannelFromConfig(ChaincodeConfig.CHANNEL_NAME, createNetworkConfig());
+        Channel newChannel = hfClient.loadChannelFromConfig(ChaincodeConfig.CHANNEL_1_NAME, createNetworkConfig());
         if (newChannel == null) {
-            throw new RuntimeException("Channel " + ChaincodeConfig.CHANNEL_NAME + " is not defined in the config file!");
+            throw new RuntimeException("Channel " + ChaincodeConfig.CHANNEL_1_NAME + " is not defined in the config file!");
+        }
+
+        return newChannel.initialize();
+    }
+    
+    @Bean(name = "channel2")
+    public Channel createChannel2() throws Exception {
+        HFClient hfClient = createHFClient();
+        Channel newChannel = hfClient.loadChannelFromConfig(ChaincodeConfig.CHANNEL_2_NAME, createNetworkConfig());
+        if (newChannel == null) {
+            throw new RuntimeException("Channel " + ChaincodeConfig.CHANNEL_2_NAME + " is not defined in the config file!");
         }
 
         return newChannel.initialize();
