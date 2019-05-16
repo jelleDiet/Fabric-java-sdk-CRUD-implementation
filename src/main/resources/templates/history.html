@@ -6,25 +6,6 @@
 </head>
 <body>
     <div class="container">
-        <br>
-        <br>
-
-        <h2>Selected fish</h2>
-
-        <table class="table table-striped">
-            <tr>
-                <th>Type</th>
-                <th>Weight</th>
-                <th>Price</th>
-            </tr>
-            <tr>
-                <td th:text="${fish.type}">Salmon</td>
-                <td th:text="${fish.weight}">2</td>
-                <td th:text="${fish.price}">3</td>
-            </tr>
-        </table>
-
-
         <h2>Fish History</h2>
 
         <table class="table table-striped">
@@ -39,9 +20,12 @@
             <tr th:each="fishHistory : ${history}">
                 <td th:text="${fishHistory.txId}">Salmon</td>
                 <td th:text="${#dates.format(new java.util.Date({fishHistory.timestamp.seconds.low}))}">2</td>
-                <td th:text="${fishHistory.value.type}">3</td>
-                <td th:text="${fishHistory.value.weight}">3</td>
-                <td th:text="${fishHistory.value.price}">3</td>
+                <td th:if="${fishHistory.isDelete == 'false'}" th:text="${fishHistory.value.type}">3</td>
+                <td th:if="${fishHistory.isDelete == 'false'}" th:text="${fishHistory.value.weight}">3</td>
+                <td th:if="${fishHistory.isDelete == 'false'}" th:text="${fishHistory.value.price}">3</td>
+                <td th:if="${fishHistory.isDelete == 'true'}"></td>
+                <td th:if="${fishHistory.isDelete == 'true'}"></td>
+                <td th:if="${fishHistory.isDelete == 'true'}"></td>
                 <td th:text="${fishHistory.isDelete}">3</td>
 
             </tr>
