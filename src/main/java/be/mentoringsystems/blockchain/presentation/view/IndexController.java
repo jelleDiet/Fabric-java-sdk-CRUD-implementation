@@ -42,6 +42,7 @@ public class IndexController {
     @RequestMapping("/products/edit")
     public String editFish(@RequestParam UUID id, Model model, @RequestParam(defaultValue = "channel1") String channel) {
         model.addAttribute("fish", fishService.getById(id, channel));
+        model.addAttribute("channel", channel);
         return "edit";
     }
 
@@ -81,10 +82,18 @@ public class IndexController {
         return "products";
     }
 
+    @RequestMapping("/products/getHistory")
+    public String getFishHistory(Model model, @RequestParam UUID id, @RequestParam(defaultValue = "channel1") String channel) {
+        model.addAttribute("fish", fishService.getById(id, channel));
+        model.addAttribute("history", fishService.getHistory(id, channel));
+        model.addAttribute("channel", channel);
+        return "history";
+    }
+
     @RequestMapping("/products/delete")
     public String deleteFish(@RequestParam UUID id, @RequestParam(defaultValue = "channel1") String channel) {
         fishService.delete(id, channel);
-        return "redirect:/products";
+        return "redirect:/products?channel=" + channel;
     }
 
     @RequestMapping("/products/save")
@@ -104,7 +113,7 @@ public class IndexController {
 
         fishService.save(fish, channel);
 
-        return "redirect:/products";
+        return "redirect:/products?channel=" + channel;
     }
 
 }

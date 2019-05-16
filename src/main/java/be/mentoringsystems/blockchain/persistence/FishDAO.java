@@ -7,6 +7,7 @@
 package be.mentoringsystems.blockchain.persistence;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.FishHistory;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import java.util.List;
 import java.util.UUID;
@@ -30,5 +31,7 @@ public interface FishDAO {
     List<Fish> getAll(String channelName);
 
     List<Fish> getAllWithPagination(int pageSize, String bookmark, String channelName);
+
+    List<FishHistory> getHistory(UUID id, String channelName);
 
 }

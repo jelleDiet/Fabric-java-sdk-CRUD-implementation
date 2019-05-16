@@ -6,6 +6,7 @@
 package be.mentoringsystems.blockchain.service;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.FishHistory;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import java.util.List;
 import java.util.UUID;
@@ -29,4 +30,6 @@ public interface FishService {
     void delete(UUID id, String channelName);
 
     List<Fish> getAll(String channelName);
+
+    List<FishHistory> getHistory(UUID id, String channelName);
 }

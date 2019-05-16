@@ -6,6 +6,7 @@
 package be.mentoringsystems.blockchain.persistence.blockchain;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.FishHistory;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
 import be.mentoringsystems.blockchain.util.ChaincodeExecuter;
@@ -154,6 +155,22 @@ public class FishDAOImpl implements FishDAO {
         }
 
         return fish;
+    }
+
+    @Override
+    public List<FishHistory> getHistory(UUID id, String channelName) {
+        List<FishHistory> history = new ArrayList<>();
+        TypeReference<List<FishHistory>> listType = new TypeReference<List<FishHistory>>() {
+        };
+        String key = String.valueOf(id);
+        String json = chaincodeExecuter.getObjectHistory(key, channelName);
+        try {
+            history = Mapper.INSTANCE.getObjectMapper().readValue(json, listType);
+        } catch (IOException ex) {
+            Logger.getLogger(FishDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return history;
     }
 
 }

@@ -6,6 +6,7 @@
 package be.mentoringsystems.blockchain.presentation.rest;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.FishHistory;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.service.FishService;
 import java.math.BigDecimal;
@@ -88,6 +89,13 @@ public class FishController {
     @RequestMapping("/queryWithPagination")
     List<Fish> queryWithPagination(@RequestParam(required = false) String bookmark, @RequestParam(defaultValue = "channel1") String channel) {
         return fishService.getAllWithPagination(5, bookmark, channel);
+    }
+
+    //Not functional yet
+    @RequestMapping("/getHistory")
+    List<FishHistory> getHistory(@RequestParam UUID id, @RequestParam(defaultValue = "channel1") String channel) {
+        return fishService.getHistory(id, channel);
+
     }
 
 }

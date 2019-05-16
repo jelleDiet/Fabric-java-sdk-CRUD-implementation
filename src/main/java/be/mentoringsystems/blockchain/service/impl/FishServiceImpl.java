@@ -6,6 +6,7 @@
 package be.mentoringsystems.blockchain.service.impl;
 
 import be.mentoringsystems.blockchain.model.Fish;
+import be.mentoringsystems.blockchain.model.FishHistory;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
 import be.mentoringsystems.blockchain.service.FishService;
@@ -57,6 +58,11 @@ public class FishServiceImpl implements FishService {
     @Override
     public List<Fish> getAllWithPagination(int pageSize, String bookmark, String channelName) {
         return fishDAO.getAllWithPagination(pageSize, bookmark, channelName);
+    }
+
+    @Override
+    public List<FishHistory> getHistory(UUID id, String channelName) {
+        return fishDAO.getHistory(id, channelName);
     }
 
 }

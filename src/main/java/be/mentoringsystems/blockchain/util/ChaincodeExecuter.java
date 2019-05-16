@@ -164,6 +164,18 @@ public class ChaincodeExecuter {
         return result;
     }
 
+    public String getObjectHistory(String key, String channelName) {
+        String result = "";
+        Channel channel = getChannelByName(channelName);
+        try {
+            result = executeTransaction(channel, false, "getHistory", key);
+        } catch (InvalidArgumentException | ProposalException | UnsupportedEncodingException | InterruptedException | ExecutionException | TimeoutException ex) {
+            Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return result;
+    }
+
     public String deleteObject(String key, String channelName) {
         String result = "";
         Channel channel = getChannelByName(channelName);

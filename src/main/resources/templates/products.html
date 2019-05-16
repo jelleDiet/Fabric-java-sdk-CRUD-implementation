@@ -6,15 +6,24 @@
 </head>
 <body>
     <div class="container">
-        <ul class="nav navbar-nav">
-            <li><a th:href="@{/products?channel=channel1}">North American Fish</a></li>
-            <li><a th:href="@{/products?channel=channel2}">European fish</a></li>
-        </ul>
+        <div th:if="${channel == 'channel1'}">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/products?channel=channel1}"><font color="green">North American Fish</font></a></li>
+                <li><a th:href="@{/products?channel=channel2}">European fish</a></li>
+            </ul>
+        </div>
+        <div th:if="${channel == 'channel2'}">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/products?channel=channel1}">North American Fish</a></li>
+                <li><a th:href="@{/products?channel=channel2}"><font color="green">European fish</font></a></li>
+            </ul>
+        </div>
         <br>
         <br>
-        
-        
-        <div th:if="${#lists.isEmpty(fishes)}"> No fish found!</div>
+
+
+        <br>
+        <br>
         <div th:if="${not #lists.isEmpty(fishes)}">
             <h2>Fish</h2>
             <table class="table table-striped">
@@ -24,13 +33,15 @@
                     <th>Price</th>
                     <th>Edit</th>
                     <th>Delete</th>
+                    <th>History</th>
                 </tr>
                 <tr th:each="fish : ${fishes}">
                     <td th:text="${fish.type}">Salmon</td>
                     <td th:text="${fish.weight}">2</td>
                     <td th:text="${fish.price}">3</td>
-                    <td><a th:href="${'/blockchain/products/edit?id=' + fish.id}" class="btn btn-default">Edit</a></td>
-                    <td><a th:href="${'/blockchain/products/delete?id=' + fish.id}" class="btn btn-danger">Delete</a></td>
+                    <td><a th:href="${'/blockchain/products/edit?id=' + fish.id + '&channel=' + channel}" class="btn btn-default">Edit</a></td>
+                    <td><a th:href="${'/blockchain/products/delete?id=' + fish.id + '&channel=' + channel}" class="btn btn-danger">Delete</a></td>
+                    <td><a th:href="${'/blockchain/products/getHistory?id=' + fish.id + '&channel=' + channel}" class="btn btn-default">History</a></td>
                 </tr>
             </table>
         </div>
