@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.sdk.Channel;
+import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.HFClient;
 import org.hyperledger.fabric.sdk.NetworkConfig;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -62,7 +63,17 @@ public class BlockchainConfig {
     @Bean(name = "AdminUserContext")
     public UserContext enrollAdmin() throws Exception {
 
-        return UserContextUtil.readUserContext(ChaincodeConfig.ORG1_NAME, ChaincodeConfig.ADMIN_NAME);
+        HFCAClient hfcaClient = createHFCAClient();
+
+        UserContext adminUserContext = new UserContext();
+        adminUserContext.setName(ChaincodeConfig.ADMIN_NAME); // admin username
+        adminUserContext.setAffiliation(ChaincodeConfig.ORG1_NAME); // affiliation
+        adminUserContext.setMspId(ChaincodeConfig.ORG1_MSP); // org1 mspid
+        Enrollment adminEnrollment = hfcaClient.enroll(ChaincodeConfig.ADMIN_NAME, ChaincodeConfig.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
+        adminUserContext.setEnrollment(adminEnrollment);
+        UserContextUtil.writeUserContext(adminUserContext);
+
+        return adminUserContext;
     }
 
 //    @Bean(name = "registerUser3")

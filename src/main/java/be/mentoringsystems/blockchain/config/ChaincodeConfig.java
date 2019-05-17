@@ -18,6 +18,6 @@ public class ChaincodeConfig {
 
     public static final String CHAINCODE_1_NAME = "NodeChaincodeExample";
 
-    public static final String CHAINCODE_1_VERSION = "0.1.4";
+    public static final String CHAINCODE_1_VERSION = "0.2.3";
 
 }
