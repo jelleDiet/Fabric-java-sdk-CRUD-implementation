@@ -6,7 +6,6 @@
  */
 package be.mentoringsystems.blockchain.user;
 
-import be.mentoringsystems.blockchain.config.ChaincodeConfig;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.sdk.Enrollment;
@@ -21,21 +20,6 @@ import org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException;
  */
 //Not used in the application, use for registering new users
 public class MembershipServiceProvider {
-
-    public static UserContext enrollAdmin(final HFCAClient hfcaClient, final String mspId, final String affiliation) throws EnrollmentException, InvalidArgumentException {
-
-        UserContext adminUserContext = null;
-
-        adminUserContext = new UserContext();
-        adminUserContext.setName(ChaincodeConfig.ADMIN_NAME); // admin username
-        adminUserContext.setAffiliation(affiliation); // affiliation
-        adminUserContext.setMspId(mspId); // org1 mspid
-        Enrollment adminEnrollment = hfcaClient.enroll(ChaincodeConfig.ADMIN_NAME, ChaincodeConfig.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
-        adminUserContext.setEnrollment(adminEnrollment);
-
-        return adminUserContext;
-
-    }
 
     public static String registerUser(final UserContext userContext, final HFCAClient hfcaClient, final UserContext adminUserContext) {
         String enrollmentSecret = "password";
@@ -58,6 +42,6 @@ public class MembershipServiceProvider {
             Logger.getLogger(MembershipServiceProvider.class.getName()).log(Level.SEVERE, ex.getMessage());
 
         }
-        return "";
+        return "success";
     }
 }
