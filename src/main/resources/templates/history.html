@@ -11,6 +11,7 @@
         <table class="table table-striped">
             <tr>
                 <th>Transaction ID</th>
+                <th>Transaction details</th>
                 <th>Timestamp</th>
                 <th>Type</th>
                 <th>Weight</th>
@@ -18,7 +19,8 @@
                 <th>Deleted</th>
             </tr>
             <tr th:each="fishHistory : ${history}">
-                <td th:text="${fishHistory.txId}">Salmon</td>
+                <td th:text="${fishHistory.txId}"></td>
+                <td><a th:href="${'/blockchain/products/transactiondetails?transactionId=' + fishHistory.txId + '&channel=' + channel}" class="btn btn-default">details</a></td>
                 <td th:text="${#dates.format(new java.util.Date({fishHistory.timestamp.seconds.low}))}">2</td>
                 <td th:if="${fishHistory.isDelete == 'false'}" th:text="${fishHistory.value.type}">3</td>
                 <td th:if="${fishHistory.isDelete == 'false'}" th:text="${fishHistory.value.weight}">3</td>

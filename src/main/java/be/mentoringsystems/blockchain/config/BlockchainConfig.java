@@ -6,12 +6,12 @@
 package be.mentoringsystems.blockchain.config;
 
 import be.mentoringsystems.blockchain.user.UserContext;
+import be.mentoringsystems.blockchain.util.UserContextUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hyperledger.fabric.sdk.Channel;
-import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.HFClient;
 import org.hyperledger.fabric.sdk.NetworkConfig;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -62,27 +62,37 @@ public class BlockchainConfig {
     @Bean(name = "AdminUserContext")
     public UserContext enrollAdmin() throws Exception {
 
-        HFCAClient hfcaClient = createHFCAClient();
-        UserContext adminUserContext = null;
-
-        adminUserContext = new UserContext();
-        adminUserContext.setName(ChaincodeConfig.ADMIN_NAME); // admin username
-        adminUserContext.setAffiliation(ChaincodeConfig.ORG1_NAME); // affiliation
-        adminUserContext.setMspId(ChaincodeConfig.ORG1_MSP); // org1 mspid
-        Enrollment adminEnrollment = hfcaClient.enroll(ChaincodeConfig.ADMIN_NAME, ChaincodeConfig.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
-        adminUserContext.setEnrollment(adminEnrollment);
-
-        return adminUserContext;
+        return UserContextUtil.readUserContext(ChaincodeConfig.ORG1_NAME, ChaincodeConfig.ADMIN_NAME);
     }
 
+//    @Bean(name = "registerUser3")
+//
+//    public UserContext registerUser3() throws Exception {
+//
+//        HFCAClient hfcaClient = createHFCAClient();
+//
+//        UserContext user = new UserContext();
+//        user.setName("user3"); // admin username
+//        user.setAffiliation(ChaincodeConfig.ORG1_NAME); // affiliation
+//        user.setMspId(ChaincodeConfig.ORG1_MSP); // org1 mspid
+//        String secret = MembershipServiceProvider.registerUser(user, hfcaClient, enrollAdmin());
+//        MembershipServiceProvider.enrollUser(user, hfcaClient, secret);
+//        UserContextUtil.writeUserContext(user);
+//
+//        return user;
+//    }
+//    @Bean(name = "getUser3")
+//    public UserContext getUser3() throws Exception {
+//
+//        return UserContextUtil.readUserContext(ChaincodeConfig.ORG1_NAME, "user3");
+//    }
     @Bean
     public HFClient createHFClient() throws Exception {
-        UserContext adminUserContext = enrollAdmin();
+        UserContext userContext = enrollAdmin();
         HFClient hfClient = HFClient.createNewInstance();
         CryptoSuite cryptoSuite = CryptoSuite.Factory.getCryptoSuite();
         hfClient.setCryptoSuite(cryptoSuite);
-        hfClient.setUserContext(adminUserContext);
-
+        hfClient.setUserContext(userContext);
         return hfClient;
     }
 
@@ -96,7 +106,7 @@ public class BlockchainConfig {
 
         return newChannel.initialize();
     }
-    
+
     @Bean(name = "channel2")
     public Channel createChannel2() throws Exception {
         HFClient hfClient = createHFClient();

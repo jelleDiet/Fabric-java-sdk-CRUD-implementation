@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <title>Transaction details</title>
+    <th:block th:include="layout/header"></th:block>
+</head>
+<body>
+    <div class="container">
+
+
+        <br>
+        <br>
+            <h2>Transaction details</h2>
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Channel</th>
+                    <th>Block number</th>
+                    <th>Timestamp</th>
+                    <th>Creator MSP</th>
+                    <th>Creator certificate</th>
+                </tr>
+                    <td th:text="${transaction.id}"></td>
+                    <td th:text="${transaction.channelId}"></td>
+                    <td th:text="${transaction.blockNumber}"></td>
+                    <td th:text="${transaction.timestamp}"></td>
+                    <td th:text="${transaction.creatorMsp}"></td>
+                    <td th:text="${transaction.creatorCertificate}"></td>
+                   
+
+            </table>
+    </div>
+</body>
+
+</html>

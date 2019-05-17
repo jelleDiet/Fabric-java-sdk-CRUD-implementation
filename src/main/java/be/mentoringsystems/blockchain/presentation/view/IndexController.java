@@ -8,6 +8,7 @@ package be.mentoringsystems.blockchain.presentation.view;
 import be.mentoringsystems.blockchain.model.Fish;
 import be.mentoringsystems.blockchain.model.query.RichQuery;
 import be.mentoringsystems.blockchain.service.FishService;
+import be.mentoringsystems.blockchain.service.TransactionService;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class IndexController {
 
     @Autowired
     FishService fishService;
+    @Autowired
+    TransactionService transactionService;
 
     @RequestMapping("/")
     public String welcome(Model model) {
@@ -89,6 +92,13 @@ public class IndexController {
         model.addAttribute("history", fishService.getHistory(id, channel));
         model.addAttribute("channel", channel);
         return "history";
+    }
+
+    @RequestMapping("/products/transactiondetails")
+    public String getFishHistory(Model model, @RequestParam String transactionId, @RequestParam(defaultValue = "channel1") String channel) {
+        model.addAttribute("transaction", transactionService.getTransactionDetailsFromBlock(transactionId, channel));
+        model.addAttribute("channel", channel);
+        return "transactiondetails";
     }
 
     @RequestMapping("/products/delete")
