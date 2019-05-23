@@ -16,11 +16,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.hyperledger.fabric.sdk.BlockEvent.TransactionEvent;
 import org.hyperledger.fabric.sdk.ChaincodeID;
 import org.hyperledger.fabric.sdk.Channel;
 import org.hyperledger.fabric.sdk.HFClient;
@@ -116,14 +117,19 @@ public class ChaincodeExecuter {
         if (invoke) {
             Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Sending transaction to orderers...");
             // Java sdk tries all orderers to send transaction, so don't worry about one orderer gone.
-            channel.sendTransaction(successful).thenApply(transactionEvent -> {
-                Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: txid: " + transactionEvent.getTransactionID());
-                Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: block number: " + transactionEvent.getBlockEvent().getBlockNumber());
+            try {
+                CompletableFuture<TransactionEvent> future = channel.sendTransaction(successful);
+                if (future.isDone()) {
+                    TransactionEvent transactionEvent = future.get();
+                    Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: txid: " + transactionEvent.getTransactionID());
+                    Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.INFO, "Orderer response: block number: " + transactionEvent.getBlockEvent().getBlockNumber());
+                    return null;
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, "Orderer exception happened: " + ex);
                 return null;
-            }).exceptionally(e -> {
-                Logger.getLogger(ChaincodeExecuter.class.getName()).log(Level.SEVERE, "Orderer exception happened: " + e);
-                return null;
-            }).get(waitTime, TimeUnit.SECONDS);
+            }
+
         }
         return payload;
     }

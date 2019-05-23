@@ -15,12 +15,13 @@
     <name>Blockchain_Fabric_Simple_Crud</name>
 
     <properties>
-        <java.version>1.8</java.version>
         <fabric-version>1.4.1</fabric-version>
         <javaee-api-version>8.0.1</javaee-api-version>
         <google-api-version>1.8.1</google-api-version>
         <guava-version>27.1-jre</guava-version>
         <bootstrap-version>3.3.7-1</bootstrap-version>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
     </properties>
 
     <dependencies>
