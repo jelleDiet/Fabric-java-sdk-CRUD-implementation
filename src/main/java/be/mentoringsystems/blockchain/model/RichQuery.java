@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package be.mentoringsystems.blockchain.model.query;
+package be.mentoringsystems.blockchain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -23,7 +23,7 @@ public class RichQuery implements Serializable {
     private Map<String, Object> selector;
     private String limit;
     private String skip;
-    private Map<String, String> sort;
+    private List<Map<String, String>> sort;
     private Map<String, String> fields;
     //Use two strings: one for the ddoc and one for the index name
     private List<String> use_index;
@@ -35,7 +35,6 @@ public class RichQuery implements Serializable {
     public void setUse_index(List<String> use_index) {
         this.use_index = use_index;
     }
-
 
     public String getLimit() {
         return limit;
@@ -57,16 +56,16 @@ public class RichQuery implements Serializable {
         return selector;
     }
 
-    public void setSelector(Map<String, Object> selector) {
-        this.selector = selector;
-    }
-
-    public Map<String, String> getSort() {
+    public List<Map<String, String>> getSort() {
         return sort;
     }
 
-    public void setSort(Map<String, String> sort) {
+    public void setSort(List<Map<String, String>> sort) {
         this.sort = sort;
+    }
+
+    public void setSelector(Map<String, Object> selector) {
+        this.selector = selector;
     }
 
     public Map<String, String> getFields() {

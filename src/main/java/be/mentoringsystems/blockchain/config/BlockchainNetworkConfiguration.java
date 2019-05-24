@@ -5,8 +5,7 @@
  */
 package be.mentoringsystems.blockchain.config;
 
-import be.mentoringsystems.blockchain.user.UserContext;
-import be.mentoringsystems.blockchain.util.UserContextUtil;
+import be.mentoringsystems.blockchain.user.FabricUserContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -19,25 +18,29 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.NetworkConfigurationException;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 /**
  *
  * @author jelle
  */
 @Configuration
-public class BlockchainConfig {
+public class BlockchainNetworkConfiguration {
+
+    @Value("classpath:connectiondetails/connectionPlatform.json")
+    private transient Resource connectionFile;
 
     @Bean
     public NetworkConfig createNetworkConfig() {
         NetworkConfig networkConfig = null;
-        String connectionProfilePath = System.getProperty("user.dir") + "/src/main/resources/connectiondetails/connectionPlatform.json";
-        File connectionFile = new File(connectionProfilePath);
         try {
-            networkConfig = NetworkConfig.fromJsonFile(connectionFile);
-        } catch (InvalidArgumentException | IOException | NetworkConfigurationException ex) {
-            Logger.getLogger(BlockchainConfig.class.getName()).log(Level.SEVERE, null, ex);
+            File connectionProfile = connectionFile.getFile();
+            networkConfig = NetworkConfig.fromJsonFile(connectionProfile);
+        } catch (IOException | InvalidArgumentException | NetworkConfigurationException ex) {
+            Logger.getLogger(BlockchainNetworkConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return networkConfig;
@@ -61,45 +64,23 @@ public class BlockchainConfig {
     }
 
     @Bean(name = "AdminUserContext")
-    public UserContext enrollAdmin() throws Exception {
+    public FabricUserContext enrollAdmin() throws Exception {
 
         HFCAClient hfcaClient = createHFCAClient();
 
-        UserContext adminUserContext = new UserContext();
-        adminUserContext.setName(ChaincodeConfig.ADMIN_NAME); // admin username
-        adminUserContext.setAffiliation(ChaincodeConfig.ORG1_NAME); // affiliation
-        adminUserContext.setMspId(ChaincodeConfig.ORG1_MSP); // org1 mspid
-        Enrollment adminEnrollment = hfcaClient.enroll(ChaincodeConfig.ADMIN_NAME, ChaincodeConfig.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
+        FabricUserContext adminUserContext = new FabricUserContext();
+        adminUserContext.setName(BlockchainNetworkAttributes.ADMIN_NAME); // admin username
+        adminUserContext.setAffiliation(BlockchainNetworkAttributes.ORG1_NAME); // affiliation
+        adminUserContext.setMspId(BlockchainNetworkAttributes.ORG1_MSP); // org1 mspid
+        Enrollment adminEnrollment = hfcaClient.enroll(BlockchainNetworkAttributes.ADMIN_NAME, BlockchainNetworkAttributes.ADMIN_PASSWORD); //pass admin username and password, adminpw is the default for fabric
         adminUserContext.setEnrollment(adminEnrollment);
-        UserContextUtil.writeUserContext(adminUserContext);
 
         return adminUserContext;
     }
 
-//    @Bean(name = "registerUser3")
-//
-//    public UserContext registerUser3() throws Exception {
-//
-//        HFCAClient hfcaClient = createHFCAClient();
-//
-//        UserContext user = new UserContext();
-//        user.setName("user3"); // admin username
-//        user.setAffiliation(ChaincodeConfig.ORG1_NAME); // affiliation
-//        user.setMspId(ChaincodeConfig.ORG1_MSP); // org1 mspid
-//        String secret = MembershipServiceProvider.registerUser(user, hfcaClient, enrollAdmin());
-//        MembershipServiceProvider.enrollUser(user, hfcaClient, secret);
-//        UserContextUtil.writeUserContext(user);
-//
-//        return user;
-//    }
-//    @Bean(name = "getUser3")
-//    public UserContext getUser3() throws Exception {
-//
-//        return UserContextUtil.readUserContext(ChaincodeConfig.ORG1_NAME, "user3");
-//    }
     @Bean
     public HFClient createHFClient() throws Exception {
-        UserContext userContext = enrollAdmin();
+        FabricUserContext userContext = enrollAdmin();
         HFClient hfClient = HFClient.createNewInstance();
         CryptoSuite cryptoSuite = CryptoSuite.Factory.getCryptoSuite();
         hfClient.setCryptoSuite(cryptoSuite);
@@ -110,9 +91,9 @@ public class BlockchainConfig {
     @Bean(name = "channel1")
     public Channel createChannel1() throws Exception {
         HFClient hfClient = createHFClient();
-        Channel newChannel = hfClient.loadChannelFromConfig(ChaincodeConfig.CHANNEL_1_NAME, createNetworkConfig());
+        Channel newChannel = hfClient.loadChannelFromConfig(BlockchainNetworkAttributes.CHANNEL_1_NAME, createNetworkConfig());
         if (newChannel == null) {
-            throw new RuntimeException("Channel " + ChaincodeConfig.CHANNEL_1_NAME + " is not defined in the config file!");
+            throw new RuntimeException("Channel " + BlockchainNetworkAttributes.CHANNEL_1_NAME + " is not defined in the config file!");
         }
 
         return newChannel.initialize();
@@ -121,9 +102,9 @@ public class BlockchainConfig {
     @Bean(name = "channel2")
     public Channel createChannel2() throws Exception {
         HFClient hfClient = createHFClient();
-        Channel newChannel = hfClient.loadChannelFromConfig(ChaincodeConfig.CHANNEL_2_NAME, createNetworkConfig());
+        Channel newChannel = hfClient.loadChannelFromConfig(BlockchainNetworkAttributes.CHANNEL_2_NAME, createNetworkConfig());
         if (newChannel == null) {
-            throw new RuntimeException("Channel " + ChaincodeConfig.CHANNEL_2_NAME + " is not defined in the config file!");
+            throw new RuntimeException("Channel " + BlockchainNetworkAttributes.CHANNEL_2_NAME + " is not defined in the config file!");
         }
 
         return newChannel.initialize();

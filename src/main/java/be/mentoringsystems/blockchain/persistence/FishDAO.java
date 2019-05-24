@@ -8,7 +8,7 @@ package be.mentoringsystems.blockchain.persistence;
 
 import be.mentoringsystems.blockchain.model.Fish;
 import be.mentoringsystems.blockchain.model.FishHistory;
-import be.mentoringsystems.blockchain.model.query.RichQuery;
+import be.mentoringsystems.blockchain.model.RichQuery;
 import java.util.List;
 import java.util.UUID;
 

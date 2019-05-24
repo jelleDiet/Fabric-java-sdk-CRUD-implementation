@@ -6,7 +6,7 @@
 package be.mentoringsystems.blockchain.presentation.view;
 
 import be.mentoringsystems.blockchain.model.Fish;
-import be.mentoringsystems.blockchain.model.query.RichQuery;
+import be.mentoringsystems.blockchain.model.RichQuery;
 import be.mentoringsystems.blockchain.service.FishService;
 import be.mentoringsystems.blockchain.service.TransactionService;
 import java.math.BigDecimal;

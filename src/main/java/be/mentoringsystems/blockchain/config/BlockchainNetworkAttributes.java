@@ -1,6 +1,6 @@
 package be.mentoringsystems.blockchain.config;
 
-public class ChaincodeConfig {
+public class BlockchainNetworkAttributes {
 
     public static final String ORG1_MSP = "Org1MSP";
 

@@ -9,8 +9,8 @@ package be.mentoringsystems.blockchain.util;
  *
  * @author jellediet
  */
-import be.mentoringsystems.blockchain.config.ChaincodeConfig;
-import be.mentoringsystems.blockchain.model.query.RichQuery;
+import be.mentoringsystems.blockchain.config.BlockchainNetworkAttributes;
+import be.mentoringsystems.blockchain.model.RichQuery;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
@@ -80,8 +80,8 @@ public class ChaincodeExecuter {
     public String executeTransaction(Channel channel, boolean invoke, String func, String... args) throws InvalidArgumentException, ProposalException, UnsupportedEncodingException, InterruptedException, ExecutionException, TimeoutException {
 
         ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
-                .setName(ChaincodeConfig.CHAINCODE_1_NAME)
-                .setVersion(ChaincodeConfig.CHAINCODE_1_VERSION);
+                .setName(BlockchainNetworkAttributes.CHAINCODE_1_NAME)
+                .setVersion(BlockchainNetworkAttributes.CHAINCODE_1_VERSION);
         ccId = chaincodeIDBuilder.build();
 
         TransactionProposalRequest transactionProposalRequest = hfClient.newTransactionProposalRequest();

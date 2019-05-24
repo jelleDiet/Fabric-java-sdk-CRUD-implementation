@@ -21,7 +21,7 @@ import org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException;
 //Not used in the application, use for registering new users
 public class MembershipServiceProvider {
 
-    public static String registerUser(final UserContext userContext, final HFCAClient hfcaClient, final UserContext adminUserContext) {
+    public static String registerUser(final FabricUserContext userContext, final HFCAClient hfcaClient, final FabricUserContext adminUserContext) {
         String enrollmentSecret = "password";
         RegistrationRequest rr;
         try {
@@ -34,7 +34,7 @@ public class MembershipServiceProvider {
         return enrollmentSecret;
     }
 
-    public static String enrollUser(UserContext userContext, HFCAClient hfcaClient, String enrollmentSecret) {
+    public static String enrollUser(FabricUserContext userContext, HFCAClient hfcaClient, String enrollmentSecret) {
         try {
             Enrollment enrollment = hfcaClient.enroll(userContext.getName(), enrollmentSecret);
             userContext.setEnrollment(enrollment);

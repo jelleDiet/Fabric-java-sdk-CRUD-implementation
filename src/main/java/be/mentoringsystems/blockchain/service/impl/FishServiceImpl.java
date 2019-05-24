@@ -7,7 +7,7 @@ package be.mentoringsystems.blockchain.service.impl;
 
 import be.mentoringsystems.blockchain.model.Fish;
 import be.mentoringsystems.blockchain.model.FishHistory;
-import be.mentoringsystems.blockchain.model.query.RichQuery;
+import be.mentoringsystems.blockchain.model.RichQuery;
 import be.mentoringsystems.blockchain.persistence.FishDAO;
 import be.mentoringsystems.blockchain.service.FishService;
 import java.util.List;

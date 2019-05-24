@@ -5,8 +5,8 @@
  */
 package be.mentoringsystems.blockchain.presentation.rest;
 
-import be.mentoringsystems.blockchain.config.ChaincodeConfig;
-import be.mentoringsystems.blockchain.user.UserContext;
+import be.mentoringsystems.blockchain.config.BlockchainNetworkAttributes;
+import be.mentoringsystems.blockchain.user.FabricUserContext;
 import java.io.File;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -42,7 +42,7 @@ public class ChaincodeController {
     HFClient client;
 
     @Autowired
-    UserContext admin;
+    FabricUserContext admin;
 
     private void out(String message) {
         Logger.getLogger("ChaincodeController").log(Logger.Level.INFO, message);
@@ -63,8 +63,8 @@ public class ChaincodeController {
         out("Creating install proposal");
         ChaincodeID ccId;
         ChaincodeID.Builder chaincodeIDBuilder = ChaincodeID.newBuilder()
-                .setName(ChaincodeConfig.CHAINCODE_1_NAME)
-                .setVersion(ChaincodeConfig.CHAINCODE_1_VERSION);
+                .setName(BlockchainNetworkAttributes.CHAINCODE_1_NAME)
+                .setVersion(BlockchainNetworkAttributes.CHAINCODE_1_VERSION);
         ccId = chaincodeIDBuilder.build();
         //Deprecated use v2.0 Lifecycle chaincode management.
         InstallProposalRequest installProposalRequest = client.newInstallProposalRequest();
@@ -74,7 +74,7 @@ public class ChaincodeController {
         installProposalRequest.setChaincodeSourceLocation(chaincode);
         installProposalRequest.setUserContext(admin);
 
-        installProposalRequest.setChaincodeVersion(ChaincodeConfig.CHAINCODE_1_VERSION);
+        installProposalRequest.setChaincodeVersion(BlockchainNetworkAttributes.CHAINCODE_1_VERSION);
         installProposalRequest.setChaincodeLanguage(TransactionRequest.Type.NODE);
 
         out("Sending install proposal");

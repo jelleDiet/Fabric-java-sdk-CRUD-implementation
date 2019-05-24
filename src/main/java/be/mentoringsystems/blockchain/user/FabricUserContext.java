@@ -9,7 +9,7 @@ import java.util.Set;
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.User;
 
-public class UserContext implements User, Serializable {
+public class FabricUserContext implements User, Serializable {
 
     private static final long serialVersionUID = 1L;
     protected String name;
